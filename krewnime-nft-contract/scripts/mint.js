@@ -9,7 +9,7 @@ Runner.run(async (provider, owner) => {
     console.log("Minting Krewnime NFT"); 
     console.log(""); 
     
-    //deploy NFT contract 
+    //get NFT contract 
     const nft = await ethers.getContractAt("KrewnimeNFT", NFT_ADDR); 
     
     await nft.initialMint(); 
