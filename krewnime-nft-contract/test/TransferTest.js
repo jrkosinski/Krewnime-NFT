@@ -3,10 +3,11 @@ const { ethers } = require("hardhat");
 const utils = require("../scripts/lib/utils");
 const constants = require("./util/constants");
 const deploy = require("./util/deploy");
+const testEvent = require("./util/testEvent"); 
 
 //TODO: test with receiver hook 
 
-describe.skip("KrewnimeNFT: Transferring", function () {		  
+describe("KrewnimeNFT: Transferring", function () {		  
 	let nft;					//contracts
 	let owner, addr1, addr2;	//accounts
 	
@@ -107,4 +108,16 @@ describe.skip("KrewnimeNFT: Transferring", function () {
             ).to.be.revertedWith("ERC721: approval to current owner"); 
         }); 
 	});
+    
+    describe("Events", function() {
+        it('transfer event fires on transferFrom', async () => {
+            testEvent(async () => await nft.transferFrom(owner.address, addr1.address, 100), 
+                "Transfer", [owner.address, addr1.address, 100]); 
+        });
+
+        it('approve event fires on approve', async () => {
+            testEvent(async () => await nft.approve(addr1.address, 10),
+                "Approve", [owner.address, addr1.address, 10]);
+        });
+    });
 });

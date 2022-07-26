@@ -3,8 +3,9 @@ const { ethers } = require("hardhat");
 const utils = require("../scripts/lib/utils");
 const constants = require("./util/constants");
 const deploy = require("./util/deploy");
+const testEvent = require("./util/testEvent");
 
-describe.skip("KrewnimeNFT: Burning", function () {		  
+describe("KrewnimeNFT: Burning", function () {		  
 	let nft;					//contracts
 	let owner, addr1, addr2;	//accounts
 	
@@ -26,7 +27,7 @@ describe.skip("KrewnimeNFT: Burning", function () {
             await expect(nft.ownerOf(1)).to.be.reverted;
 		});
 		
-		it("non-owner can burn another's token without approval", async function () {
+		it("non-owner cannot burn another's token without approval", async function () {
             await nft.mintNext(addr1.address); 
 			
             expect(await nft.ownerOf(1)).to.equal(addr1.address); 
@@ -47,7 +48,16 @@ describe.skip("KrewnimeNFT: Burning", function () {
             expect(await nft.balanceOf(addr1.address)).to.equal(0); 
             expect(await nft.balanceOf(addr2.address)).to.equal(0); 
             await expect(nft.ownerOf(1)).to.be.reverted;
-		});
+        });
+
+        describe("Events", function () {
+            it('transfer event fires on burn', async () => {
+                await nft.mintNext(addr1.address); 
+                
+                testEvent(async () => await nft.connect(addr1).burn(1),
+                    "Transfer", [addr1.address, 0, 1]);
+            });
+        });
 		
 		//TODO: cannot burn non-existent token
 	});

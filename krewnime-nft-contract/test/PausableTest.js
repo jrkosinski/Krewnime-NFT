@@ -3,8 +3,9 @@ const { ethers } = require("hardhat");
 const utils = require("../scripts/lib/utils");
 const constants = require("./util/constants");
 const deploy = require("./util/deploy");
+const testEvent = require("./util/testEvent");
 
-describe.skip("KrewnimeNFT: Pausable", function () {		  
+describe("KrewnimeNFT: Pausable", function () {		  
 	let nft;				//contracts
 	let owner, addr1; 		//accounts
 	
@@ -63,5 +64,18 @@ describe.skip("KrewnimeNFT: Pausable", function () {
             expect(await nft.paused()).to.equal(true);
             await expect(nft.transferFrom(owner.address, addr1.address, 1)).to.be.revertedWith("Pausable: paused"); 
 		});
-	});
+    });
+
+    describe("Events", function () {
+        it('paused event fires on pause', async () => {
+            testEvent(async () => await nft.pause(),
+                "Paused", [owner.address]);
+        });
+
+        it('unpaused event fires on unpause', async () => {
+            await nft.pause(); 
+            testEvent(async () => await nft.unpause(),
+                "Unpaused", [owner.address]);
+        });
+    });
 });

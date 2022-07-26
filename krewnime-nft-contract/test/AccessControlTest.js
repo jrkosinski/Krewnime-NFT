@@ -3,8 +3,9 @@ const { ethers } = require("hardhat");
 const utils = require("../scripts/lib/utils");
 const constants = require("./util/constants");
 const deploy = require("./util/deploy");
+const testEvent = require("./util/testEvent");
 
-describe.skip("KrewnimeNFT: Access Control", function () {		  
+describe("KrewnimeNFT: Access Control", function () {		  
 	let nft;				    //contracts
 	let owner, addr1, addr2; 	//accounts
 	
@@ -31,17 +32,17 @@ describe.skip("KrewnimeNFT: Access Control", function () {
     
 	describe("Managing Roles", function () {
         it("admin can grant a role", async function () {
-			await(nft.grantRole(constants.roles.MINTER, addr1.address)); 
+			await nft.grantRole(constants.roles.MINTER, addr1.address); 
             
 			expect(await nft.hasRole(constants.roles.MINTER, addr1.address)).to.equal(true);
 		});
         
         it("admin can revoke a role", async function () {
-			await(nft.grantRole(constants.roles.MINTER, addr1.address)); 
+			await nft.grantRole(constants.roles.MINTER, addr1.address); 
             
 			expect(await nft.hasRole(constants.roles.MINTER, addr1.address)).to.equal(true);
             
-            await(nft.revokeRole(constants.roles.MINTER, addr1.address)); 
+            await nft.revokeRole(constants.roles.MINTER, addr1.address); 
             
 			expect(await nft.hasRole(constants.roles.MINTER, addr1.address)).to.equal(false);
 		});
@@ -111,5 +112,19 @@ describe.skip("KrewnimeNFT: Access Control", function () {
 			await nft.connect(addr1).mintNext(addr1.address); 
             expect(await nft.balanceOf(addr1.address)).to.equal(1); 
 		});
-    }); 
+    });
+
+    describe("Events", function () {
+        it('rolegranted event fires on grantRole', async () => {
+            testEvent(async () => await nft.grantRole(constants.roles.MINTER, addr1.address),
+                "RoleGranted", [constants.roles.MINTER, addr1.address, owner.address]);
+        });
+
+        it('rolerevoked event fires on revokeRole', async () => {
+            await (nft.grantRole(constants.roles.MINTER, addr1.address)); 
+
+            testEvent(async () => await nft.revokeRole(constants.roles.MINTER, addr1.address),
+                "RoleRevoked", [constants.roles.MINTER, addr1.address, owner.address]);
+        });
+    });
 });

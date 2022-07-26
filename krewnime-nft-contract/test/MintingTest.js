@@ -3,8 +3,9 @@ const { ethers } = require("hardhat");
 const utils = require("../scripts/lib/utils");
 const constants = require("./util/constants");
 const deploy = require("./util/deploy");
+const testEvent = require("./util/testEvent");
 
-describe.skip("KrewnimeNFT: Minting", function () {
+describe("KrewnimeNFT: Minting", function () {
     let nft;                    //contracts
     let owner, addr1, addr2;    //addresses
     
@@ -130,5 +131,12 @@ describe.skip("KrewnimeNFT: Minting", function () {
                 }
             }
         }); 
+    });
+
+    describe("Events", function () {
+        it('transfer event fires on mint', async () => {
+            testEvent(async () => await nft.mintNext(addr1.address),
+                "Transfer", [owner.address, addr1.address, 1]);
+        });
     });
 }); 
