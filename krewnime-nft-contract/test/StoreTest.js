@@ -6,7 +6,7 @@ const deploy = require("./util/deploy");
 
 //TODO: add more coverage here
 
-describe.skip("KrewnimeNFT: Store", function () {		  
+describe("KrewnimeNFT: Store", function () {		  
 	let nft, store;		    //contracts
 	let owner, addr1; 		//accounts
 	
@@ -16,7 +16,7 @@ describe.skip("KrewnimeNFT: Store", function () {
         //contract
 		nft = await deploy.deployNFT();
         
-        store = await utils.deployContractSilent("NFTStore", [nft.address, constants.MINT_PRICE]); 
+        store = await utils.deployContractSilent(constants.STORE_CONTRACT_ID, [nft.address, constants.MINT_PRICE]); 
 	});
 	
 	describe("Initial State", function () {

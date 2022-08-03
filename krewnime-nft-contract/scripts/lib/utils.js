@@ -3,6 +3,7 @@ const { isArray } = require("lodash");
 
 const provider = waffle.provider;
 
+//TODO: consider making typescript 
 /**
  * General utility functions for testing, deploying, etc. 
  */

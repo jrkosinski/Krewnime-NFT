@@ -1,26 +1,24 @@
 const utils = require("./lib/utils");
 const { ethers } = require("hardhat");
+const constants = require("./constants"); 
 
-const BASE_URI = "ipfs://QmfPGLQPbfhfW1gA6bTqLa1R5RUmfPVcyRdaCGZhF8rAob/"; 
-const MAX_SUPPLY = 10; 
-const COLLECTION_SIZE = 10;
 
 module.exports = {
     deployNFT: async () => {
-        return await utils.deployContractSilent("KrewnimeNFT", [
-            "0x0000000000000000000000000000000000000000",
-            "Krewnime NFT", 
-            "KRW",
-            MAX_SUPPLY, 
-            COLLECTION_SIZE,
-            BASE_URI
+        return await utils.deployContractSilent(constants.TOKEN_CONTRACT_ID, [ 
+            constants.ZERO_ADDRESS, 
+            constants.TOKEN_NAME,
+            constants.TOKEN_SYMBOL,
+            constants.MAX_SUPPLY, 
+            constants.COLLECTION_SIZE,
+            constants.BASE_URI
         ]); 
     }, 
     
     deployStore: async (nftAddr) => {
-        return await utils.deployContractSilent("NFTStore", [
+        return await utils.deployContractSilent(constants.STORE_CONTRACT_ID, [  
             nftAddr, 
-            ethers.utils.parseEther("0.0065")
+            ethers.utils.parseEther("0.0065")   //TODO: get from constants
         ]); 
     }
 };

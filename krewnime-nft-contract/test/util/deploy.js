@@ -4,10 +4,10 @@ const utils = require("../../scripts/lib/utils");
 
 module.exports = {
     deployNFT : async () => {
-		return await utils.deployContractSilent("KrewnimeNFT", [
-            "0x0000000000000000000000000000000000000000",
-            constants.NAME, 
-            constants.SYMBOL, 
+		return await utils.deployContractSilent(constants.TOKEN_CONTRACT_ID, [
+            constants.ZERO_ADDRESS,
+            constants.TOKEN_NAME, 
+            constants.TOKEN_SYMBOL,
             constants.MAX_SUPPLY, 
             constants.COLLECTION_SIZE, 
             constants.BASE_URI

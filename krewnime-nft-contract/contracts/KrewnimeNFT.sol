@@ -15,9 +15,33 @@ import "./IMintable.sol";
  * @title The Krewnime NFT Collection 
  * @author John R. Kosinski 
  * 
- * The specs of this project are simple; the owner wants to be able to mint all tokens at once
- * or individually, with the option to (a) add more tokens in the future, and mint them, and 
- * (b) to create a new version of the contract if desired. 
+ * This project allows the single contract owner to mint all tokens at once or individually, 
+ * with the option to (a) add more tokens to the collection in the future and mint them, 
+ * and (b) to create a new version of the store contract if desired, in order to change the 
+ * rules for the selling and minting of NFTs. 
+ * 
+ * The design creates a basic NFT contract that allows for: 
+ * - pausing and unpausing 
+ * - changing the collection size (adding to the collection) 
+ * - receiving royalties (ERC-2981) 
+ * - enumerable 
+ * - mintable 
+ * - burnable 
+ * - URI storage 
+ * - role-based security
+ * 
+ * The business rules for selling and minting are stored separately in the NFTStore 
+ * contract. If the business rules change, that contract can be decommissioned and replaced
+ * by another contract, which is assigned the Mintable role for the NFT, replacing the 
+ * old store with the new one. 
+ * 
+ * The base use case here is for the collection owner to mint the entire collection 
+ * initially, to be sold on a marketplace. 
+ * 
+ * NOTE that this set of contracts is meant to be full-featured and not low-gas. A 
+ * low-gas version may be implemented in the future. 
+ * 
+ * Remedial action upon compromise is to pause the contract. 
  */
 contract KrewnimeNFT is 
         IMintable, 
@@ -29,15 +53,24 @@ contract KrewnimeNFT is
         AccessControl {
     using Strings for uint256; 
     
+    //max number of items that can be minted; 1 by default
     uint256 public maxSupply = 1; 
+    
+    //max number of items in collection; 1 by default 
     uint256 public collectionSize = 1; 
+    
+    //base URI must be changed to a valid URI. <n>.png (sequential) will be appended 
+    //to the base URI to create URIs for newly minted tokens 
     string public baseUri = "ipfs://{hash}/";
+    
+    //the token ID is a simple increment. The first one minted will be 1 
     uint256 private _tokenIdCounter = 0;
     
-    //roles 
+    //security roles 
+    //TODO: change this to keccak256
     bytes32 public constant MINTER_ROLE = "MINTER";
     
-    //royalties 
+    //royalties (ERC-2981 implementation) - default to 0%
     address private royaltyReceiver = address(0); 
     uint96 private royaltyFeeNumerator = 0;
     uint96 private royaltyFeeDenominator = 0; 
@@ -48,7 +81,7 @@ contract KrewnimeNFT is
      * @param initialOwner Initial owner address (if 0x0, owner becomes msg.sender)
      * @param tokenName NFT token name 
      * @param tokenSymbol NFT token symbol 
-     * @param _maxSupply Number of items in the collection 
+     * @param _collectionSize Number of items in the collection 
      * @param _baseUri Base URI used in token URI generation (incremented)
      */
     constructor(
@@ -59,7 +92,8 @@ contract KrewnimeNFT is
         uint256 _collectionSize, 
         string memory _baseUri
         ) ERC721(tokenName, tokenSymbol) {
-        require(collectionSize <= maxSupply, "KRW: collectionSize may not exceed maxSupply"); 
+            
+        require(_maxSupply >= _collectionSize, "KRW: Collection size cannot exceed max supply.");
             
         //if an address is passed, it is the owner 
         if (initialOwner == address(0)) {
@@ -71,7 +105,7 @@ contract KrewnimeNFT is
         _grantRole(DEFAULT_ADMIN_ROLE, initialOwner);
         
         //set state 
-        maxSupply = _maxSupply; 
+        maxSupply = _maxSupply;
         collectionSize = _collectionSize;
         baseUri = _baseUri; 
     }
@@ -93,21 +127,23 @@ contract KrewnimeNFT is
     }
     
     /**
+     * @dev Owner can change the collectionSize - the number of items in the collection. 
+     * 
+     * @param _collectionSize The new value to set for collectionSize. 
+     */
+    function setCollectionSize(uint256 _collectionSize) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        require(maxSupply >= _collectionSize, "KRW: Collection size cannot exceed max supply.");
+        collectionSize = _collectionSize;
+    }
+    
+    /**
      * @dev Owner can change the maxSupply - the max number of items that can be minted. 
      * 
      * @param _maxSupply The new value to set for maxSupply. 
      */
     function setMaxSupply(uint256 _maxSupply) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        require(_maxSupply >= collectionSize, "KRW: Collection size cannot exceed max supply.");
         maxSupply = _maxSupply;
-    }
-    
-    /**
-     * @dev Owner can change the collectionSize - the number of items in the collection. 
-     * 
-     * @param _collectionSize The new value to set for maxSupply. 
-     */
-    function setCollectionSize(uint256 _collectionSize) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        collectionSize = _collectionSize;
     }
     
     /**
@@ -133,6 +169,7 @@ contract KrewnimeNFT is
      * @dev Mints the entire collection to the admin or owner (caller). 
      */
     function initialMint() external onlyRole(DEFAULT_ADMIN_ROLE) {
+        //TODO: require totalSupply to be 0
         for(uint n=0; n<collectionSize; n++) {
             _mintNext(msg.sender);
         }
@@ -246,6 +283,7 @@ contract KrewnimeNFT is
      * @dev ERC-2981 implementation; provides royalty information to exchanges who may or may not use this 
      * to award royalty percentages for future resales. This will return 0x0... for address and 0 
      * for amount if royalties are not enabled for this contract. 
+     * Royalties are the same for all token IDs. 
      * 
      * @return receiver The address to receive the royalty fee. 
      * @return amount The amount of royalty as a percentage of the sale price. 

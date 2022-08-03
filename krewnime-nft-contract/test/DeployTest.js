@@ -4,7 +4,7 @@ const utils = require("../scripts/lib/utils");
 const constants = require("./util/constants");
 const deploy = require("./util/deploy");
 
-describe.skip("KrewnimeNFT: Deployment", function () {		  
+describe("KrewnimeNFT: Deployment", function () {		  
 	let nft;				//contracts
 	let owner, addr1; 		//accounts
 	
@@ -24,10 +24,10 @@ describe.skip("KrewnimeNFT: Deployment", function () {
 	
 	describe("Deployment", function () {
 		it("ownership transfer on deployment", async function () {
-            const contract = await utils.deployContractSilent("KrewnimeNFT", [
+            const contract = await utils.deployContractSilent(constants.TOKEN_CONTRACT_ID, [
                 addr1.address, 
-                constants.NAME, 
-                constants.SYMBOL, 
+                constants.TOKEN_NAME, 
+                constants.TOKEN_SYMBOL, 
                 constants.MAX_SUPPLY, 
                 constants.COLLECTION_SIZE,
                 constants.BASE_URI

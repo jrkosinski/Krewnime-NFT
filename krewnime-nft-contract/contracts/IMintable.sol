@@ -9,13 +9,43 @@ import "./openzeppelin/access/Ownable.sol";
 import "./openzeppelin/utils/Counters.sol";
 import "./openzeppelin/utils/Strings.sol";
 
+//DONE: all comments in contract
+
+//TODO: all comments in js 
+//TODO: comment up tests
+//TODO: clean up tests
+//TODO: add more tests - make sure coverage is 100% 
+//TODO: run solidity-coverage
+//TODO: all todos
+//TODO: rename NFTStore to TokenMintStore
+//TODO: dynamic values in revert strings? (KRW)
+//TODO: revert constructor if bad values (e.g empty string) 
+
 /**
  * @title The Krewnime NFT Collection 
  * @author John R. Kosinski 
  * 
- * The specs of this project are simple; the owner wants to be able to mint all tokens at once
- * or individually, with the option to (a) add more tokens in the future, and mint them, and 
- * (b) to create a new version of the contract if desired. 
+ * This project allows the single contract owner to mint all tokens at once or individually, 
+ * with the option to (a) add more tokens to the collection in the future and mint them, 
+ * and (b) to create a new version of the store contract if desired, in order to change the 
+ * rules for the selling and minting of NFTs. 
+ * 
+ * The design creates a basic NFT contract that allows for: 
+ * - pausing and unpausing 
+ * - changing the collection size (adding to the collection) 
+ * - receiving royalties (ERC-2981) 
+ * - enumerable 
+ * - mintable 
+ * - burnable 
+ * - URI storage 
+ * - role-based security
+ * 
+ * The business rules for selling and minting are stored separately in the NFTStore 
+ * contract. If the business rules change, that contract can be decommissioned and replaced
+ * by another contract, which is assigned the Mintable role for the NFT, replacing the 
+ * old store with the new one. 
+ * 
+ * NFT contracts which use the NFTStore to mint them, must implement this interface. 
  */
 interface IMintable  {
 

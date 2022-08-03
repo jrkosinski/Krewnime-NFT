@@ -43,7 +43,7 @@ describe("KrewnimeNFT: Access Control", function () {
 			expect(await nft.hasRole(constants.roles.MINTER, addr1.address)).to.equal(true);
             
             await nft.revokeRole(constants.roles.MINTER, addr1.address); 
-            
+
 			expect(await nft.hasRole(constants.roles.MINTER, addr1.address)).to.equal(false);
 		});
         
@@ -53,14 +53,14 @@ describe("KrewnimeNFT: Access Control", function () {
 			expect(await nft.hasRole(constants.roles.MINTER, addr1.address)).to.equal(true);
             
             await(nft.connect(addr1).renounceRole(constants.roles.MINTER, addr1.address)); 
-            
+
 			expect(await nft.hasRole(constants.roles.MINTER, addr1.address)).to.equal(false);
 		});
         
 		it("transfer ownership", async function () {
 			await(nft.grantRole(constants.roles.ADMIN, addr1.address)); 
             await(nft.renounceRole(constants.roles.ADMIN, owner.address)); 
-            
+
 			expect(await nft.hasRole(constants.roles.ADMIN, owner.address)).to.equal(false);
 			expect(await nft.hasRole(constants.roles.ADMIN, addr1.address)).to.equal(true);
 		});
@@ -86,15 +86,22 @@ describe("KrewnimeNFT: Access Control", function () {
             await expect(nft.connect(addr1).pause()).to.not.be.reverted;
 		});
         
-		it("non-admin set max supply", async function () {
-            await expect(nft.connect(addr2).setMaxSupply(1)).to.be.reverted;
-            await expect(nft.connect(addr1).setMaxSupply(1)).to.not.be.reverted;
-		});
+		it("non-admin cannot set max supply", async function () {
+            await expect(nft.connect(addr2).setMaxSupply(10)).to.be.reverted;
+            await expect(nft.connect(addr1).setMaxSupply(10)).to.not.be.reverted;
+        });
+
+        it("non-admin cannot set collection size", async function () {
+            await expect(nft.connect(addr2).setCollectionSize(1)).to.be.reverted;
+            await expect(nft.connect(addr1).setCollectionSize(1)).to.not.be.reverted;
+        });
         
 		it("non-admin set base URI", async function () {
             await expect(nft.connect(addr2).setBaseUri("uri")).to.be.reverted;
             await expect(nft.connect(addr1).setBaseUri("uri")).to.not.be.reverted;
 		});
+
+        //TODO: make sure all functions are represented 
     }); 
     
 	describe("Minter Role", function () {
@@ -127,4 +134,6 @@ describe("KrewnimeNFT: Access Control", function () {
                 "RoleRevoked", [constants.roles.MINTER, addr1.address, owner.address]);
         });
     });
+    
+    //TODO: test permissions for NFT store 
 });

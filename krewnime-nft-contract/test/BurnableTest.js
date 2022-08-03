@@ -20,16 +20,21 @@ describe("KrewnimeNFT: Burning", function () {
 		it("owner can burn a token", async function () {
             await nft.mintNext(addr1.address); 
             
+            //owner burns a token 
             expect(await nft.ownerOf(1)).to.equal(addr1.address); 
 			await nft.connect(addr1).burn(1); 
 			
+            //expect balance to be zero 
             expect(await nft.balanceOf(addr1.address)).to.equal(0); 
+            
+            //expect burnt token to be nonexistent 
             await expect(nft.ownerOf(1)).to.be.reverted;
 		});
 		
 		it("non-owner cannot burn another's token without approval", async function () {
             await nft.mintNext(addr1.address); 
 			
+            //expect attempt to be reverted 
             expect(await nft.ownerOf(1)).to.equal(addr1.address); 
 			await expect(
 				nft.connect(addr2).burn(1)
@@ -45,8 +50,11 @@ describe("KrewnimeNFT: Burning", function () {
             await nft.connect(addr1).approve(addr2.address, 1); 
 			await nft.connect(addr2).burn(1); 
 			
+            //expect balances to be zero 
             expect(await nft.balanceOf(addr1.address)).to.equal(0); 
             expect(await nft.balanceOf(addr2.address)).to.equal(0); 
+
+            //expect burnt token to be nonexistent 
             await expect(nft.ownerOf(1)).to.be.reverted;
         });
 

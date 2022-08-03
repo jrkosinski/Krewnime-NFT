@@ -1,17 +1,22 @@
 module.exports = {
-    BASE_URI : "ipfs://ipfs_file_hash/",
-    MAX_SUPPLY : 5, 
+
+    TOKEN_NAME: "KrewnimeTest",
+    TOKEN_SYMBOL: "KRW",
+    TOKEN_CONTRACT_ID: "KrewnimeNFT",
+    STORE_CONTRACT_ID: "NFTStore",
+    BASE_URI: "ipfs://ipfs_file_hash/",
+    MAX_SUPPLY: 5,
     COLLECTION_SIZE : 5, 
-    NAME : "KrewnimeTest", 
-    SYMBOL : "KRW", 
     MINT_PRICE: 10000000000,
+    ZERO_ADDRESS: "0x0000000000000000000000000000000000000000",
     
     roles: {
         ADMIN: ethers.utils.hexZeroPad(ethers.utils.hexlify(0), 32),
+        //TODO: make this keccak256
         MINTER: '0x4d494e5445520000000000000000000000000000000000000000000000000000'
     }, 
     
-    //TODO: can these be calculated? 
+    //TODO: calculate these instead of hard-coding
     interfaceIds : {
         IERC2981:           "0x2a55205a", 
         IERC165:            "0x01ffc9a7", 

@@ -1,12 +1,16 @@
 const Deployer = require("./deployer");
 const Runner = require("./lib/runner");
+const constants = require("./constants"); 
 
-const MINTER_ROLE = '0x4d494e5445520000000000000000000000000000000000000000000000000000'; 
-
+/**
+ * Deploys token contract with initial specified parameters, and sets royalty info. 
+ * Deploys the token mint store contract, and gives it minter role permission. 
+ */
 Runner.run(async (provider, owner) => {
     
+    //TODO: combine this into function with deployTokenOnly
     console.log(' * * * '); 
-    console.log("Deploying Krewnime NFT"); 
+    console.log("Deploying ", constants.TOKEN_CONTRACT_ID); 
     console.log(""); 
     
     //deploy NFT contract 
@@ -26,11 +30,11 @@ Runner.run(async (provider, owner) => {
     console.log(""); 
     
     //set royalty info to 0.5% 
-    await nft.setRoyaltyInfo(owner.address, 5, 1000); 
+    await nft.setRoyaltyInfo(owner.address, 5, 1000);   //TODO: get from constants
     const royalties = await nft.getRoyaltyInfo(); 
     console.log(`royalties are set to [${royalties[1]}/${royalties[2]}], and will be paid to ${royalties[0]}`);
     
     //set the store as a minter 
-    await nft.grantRole(MINTER_ROLE, store.address); 
+    await nft.grantRole(constants.MINTER_ROLE, store.address); 
 });
 

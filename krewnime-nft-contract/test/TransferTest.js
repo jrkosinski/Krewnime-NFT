@@ -6,6 +6,7 @@ const deploy = require("./util/deploy");
 const testEvent = require("./util/testEvent"); 
 
 //TODO: test with receiver hook 
+//TODO: test approveAll
 
 describe("KrewnimeNFT: Transferring", function () {		  
 	let nft;					//contracts
@@ -23,7 +24,8 @@ describe("KrewnimeNFT: Transferring", function () {
 	});
 	
 	describe("Initial State", function() { 
-		it("Initial balances", async function () {
+        it("Initial balances", async function () {
+            //owner has been minted 3 tokens
             expect(await nft.balanceOf(owner.address)).to.equal(3); 
             expect(await nft.ownerOf(1)).to.equal(owner.address); 
             expect(await nft.ownerOf(2)).to.equal(owner.address); 
@@ -35,15 +37,20 @@ describe("KrewnimeNFT: Transferring", function () {
 		it("owner can transfer a token without data", async function () {
             await nft.transferFrom(owner.address, addr1.address, 1); 
             
+            //check that transfer was credited and debited
             expect(await nft.balanceOf(owner.address)).to.equal(2); 
             expect(await nft.balanceOf(addr1.address)).to.equal(1); 
             expect(await nft.ownerOf(1)).to.equal(addr1.address); 
 		});
           
 		it("double transfer without data", async function () {
+            //transfer 1 from owner to addr1
             await nft.transferFrom(owner.address, addr1.address, 1); 
-            await nft.connect(addr1).transferFrom(addr1.address, addr2.address, 1); 
             
+            //then transfer it from addr1 to addr2
+            await nft.connect(addr1).transferFrom(addr1.address, addr2.address, 1); 
+
+            //check that transfer was credited and debited accordingly
             expect(await nft.balanceOf(owner.address)).to.equal(2); 
             expect(await nft.balanceOf(addr1.address)).to.equal(0); 
             expect(await nft.balanceOf(addr2.address)).to.equal(1); 
@@ -60,7 +67,8 @@ describe("KrewnimeNFT: Transferring", function () {
 		it("approve and transfer", async function () {
             await nft.approve(addr1.address, 1); 
             await nft.connect(addr1).transferFrom(owner.address, addr1.address, 1); 
-            
+
+            //check that transfer was credited and debited
             expect(await nft.balanceOf(owner.address)).to.equal(2);
             expect(await nft.balanceOf(addr1.address)).to.equal(1);
             expect(await nft.ownerOf(1)).to.equal(addr1.address);
@@ -69,7 +77,8 @@ describe("KrewnimeNFT: Transferring", function () {
         it("approve and transfer to a third user", async function () {
             await nft.approve(addr1.address, 1); 
             await nft.connect(addr1).transferFrom(owner.address, addr2.address, 1); 
-            
+
+            //check that transfer was credited and debited
             expect(await nft.balanceOf(owner.address)).to.equal(2); 
             expect(await nft.balanceOf(addr2.address)).to.equal(1); 
             expect(await nft.ownerOf(1)).to.equal(addr2.address);
@@ -77,8 +86,11 @@ describe("KrewnimeNFT: Transferring", function () {
         
         it("cannot approve and double transfer", async function () {
             await nft.approve(addr1.address, 1);
+            
+            //transfer from owner to addr2, using addr1 as middleman after approval
             await nft.connect(addr1).transferFrom(owner.address, addr2.address, 1); 
             
+            //try to transfer another one
             await expect(
                 nft.connect(addr1).transferFrom(addr2.address, addr1.address, 1)
             ).to.be.revertedWith("ERC721: caller is not token owner nor approved");

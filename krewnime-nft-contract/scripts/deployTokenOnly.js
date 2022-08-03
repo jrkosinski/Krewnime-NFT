@@ -2,20 +2,19 @@ const Deployer = require("./deployer");
 const Runner = require("./lib/runner");
 const constants = require("./constants"); 
 
-//deployed token address goes here 
-const NFT_ADDR = "0x8f6D93283aB1dC0656bDA558dF9d12C211303ea6";
-
 /**
- * Displays some information about the token contract. 
+ * Deploys token contract with initial specified parameters, and sets royalty info. 
+ * Does not deploy token mint store. 
  */
 Runner.run(async (provider, owner) => {
 
     console.log(' * * * ');
-    console.log("Getting ", constants.TOKEN_CONTRACT_ID); 
+    console.log("Deploying ", constants.TOKEN_CONTRACT_ID);
     console.log("");
 
-    //get NFT contract 
-    const nft = await ethers.getContractAt(constants.TOKEN_CONTRACT_ID, NFT_ADDR);    
+    //deploy NFT contract 
+    const nft = await Deployer.deployNFT();
+    console.log(`NFT address is ${nft.address}`);
 
     console.log(' * * * ');
     console.log("");
@@ -25,6 +24,8 @@ Runner.run(async (provider, owner) => {
     console.log(`collection size: ${await nft.collectionSize()}`);
     console.log("");
 
+    //set royalty info to 0.5% 
+    await nft.setRoyaltyInfo(owner.address, 5, 1000);   //TODO: get from constants
     const royalties = await nft.getRoyaltyInfo();
     console.log(`royalties are set to [${royalties[1]}/${royalties[2]}], and will be paid to ${royalties[0]}`);
 });

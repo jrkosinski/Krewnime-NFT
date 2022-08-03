@@ -6,14 +6,38 @@ import "./openzeppelin/access/Ownable.sol";
 import "./IMintable.sol";
 
 /**
- * @title Krewnime NFT Collection Store
+ * @title The Krewnime NFT Collection 
  * @author John R. Kosinski 
  * 
- * Minting/sale of NFT. 
+ * This project allows the single contract owner to mint all tokens at once or individually, 
+ * with the option to (a) add more tokens to the collection in the future and mint them, 
+ * and (b) to create a new version of the store contract if desired, in order to change the 
+ * rules for the selling and minting of NFTs. 
  * 
- * The specs of this project are simple; the owner wants to be able to mint all tokens at once
- * or individually, with the option to (a) add more tokens in the future, and mint them, and 
- * (b) to create a new version of the contract if desired. 
+ * The design creates a basic NFT contract that allows for: 
+ * - pausing and unpausing 
+ * - changing the collection size (adding to the collection) 
+ * - receiving royalties (ERC-2981) 
+ * - enumerable 
+ * - mintable 
+ * - burnable 
+ * - URI storage 
+ * - role-based security
+ * 
+ * The business rules for selling and minting are stored separately in the NFTStore 
+ * contract. If the business rules change, that contract can be decommissioned and replaced
+ * by another contract, which is assigned the Mintable role for the NFT, replacing the 
+ * old store with the new one. 
+ * 
+ * This contract can work with any IMintable. 
+ * 
+ * To enable it, create it with the address  of the NFT contract to be minted in 
+ * the constructor. Then, for the NFT contract (which should implement role-based  
+ * security) enable the MINTER role for this NFTStore contract. Now this contract 
+ * is set up to sell mints of the specified NFT. 
+ * 
+ * This contract is a simple Ownable. The remedial action upon compromise is to either 
+ * pause this contract, remove its MINTER role from the associated NFT contract, or both.
  */
 contract NFTStore is Pausable, Ownable {
     IMintable public nftContract; 
@@ -22,6 +46,7 @@ contract NFTStore is Pausable, Ownable {
     
     /**
      * @dev Constructor. 
+     * 
      * @param _nftContract The address of the NFT contract whose items are being sold. 
      * @param _mintPrice The price charged per unit to mint. 
      */
