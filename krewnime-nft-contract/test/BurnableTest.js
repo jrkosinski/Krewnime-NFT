@@ -57,16 +57,18 @@ describe("KrewnimeNFT: Burning", function () {
             //expect burnt token to be nonexistent 
             await expect(nft.ownerOf(1)).to.be.reverted;
         });
-
-        describe("Events", function () {
-            it('transfer event fires on burn', async () => {
-                await nft.mintNext(addr1.address); 
-                
-                testEvent(async () => await nft.connect(addr1).burn(1),
-                    "Transfer", [addr1.address, 0, 1]);
-            });
+        
+        it("cannot burn non-existent token", async () => {
+            await expect(nft.connect(addr1).burn(1)).to.be.reverted;
         });
-		
-		//TODO: cannot burn non-existent token
-	});
+    });
+
+    describe("Events", function () {
+        it('transfer event fires on burn', async () => {
+            await nft.mintNext(addr1.address);
+
+            testEvent(async () => await nft.connect(addr1).burn(1),
+                "Transfer", [addr1.address, 0, 1]);
+        });
+    });
 });

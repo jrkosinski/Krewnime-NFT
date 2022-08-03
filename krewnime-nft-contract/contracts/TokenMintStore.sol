@@ -122,7 +122,7 @@ contract TokenMintStore is Pausable, Ownable {
      * @param to The NFT token recipient. 
      * @return tokenId The ID of the minted token. 
      */
-    function mintNext(address to) external payable returns(uint256) {
+    function mintNext(address to) external payable whenNotPaused returns(uint256) {
         require(address(nftContract) != address(0), "TokenMintStore: NFT address not set");
         require(msg.value >= getMintPrice(to), "TokenMintStore: transferred value less than price");
         
@@ -140,7 +140,7 @@ contract TokenMintStore is Pausable, Ownable {
      * @param to The NFT token recipient. 
      * @return The number minted and sold. 
      */
-    function multiMint(address to, uint256 count) external payable returns (uint256) {
+    function multiMint(address to, uint256 count) external payable whenNotPaused returns (uint256) {
         require(address(nftContract) != address(0), "TokenMintStore: NFT address not set");
         
         uint256 numberMinted = nftContract.multiMint(to, count); 
@@ -156,7 +156,7 @@ contract TokenMintStore is Pausable, Ownable {
      * 
      * @return True if successful. 
      */
-    function withdrawAll() external onlyOwner returns (bool) {
+    function withdrawAll() external onlyOwner whenNotPaused returns (bool) {
         uint256 amount = address(this).balance;
         (bool success,) = msg.sender.call{value:amount}(""); 
         

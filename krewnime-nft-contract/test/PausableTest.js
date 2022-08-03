@@ -84,6 +84,14 @@ describe("KrewnimeNFT: Pausable", function () {
             
             await expect(nft.approve(addr1.address, 1)).to.be.revertedWith("Pausable: paused");
         });
+
+        it("cannot burn when paused", async function () {
+            await nft.mintNext(owner.address);
+            await nft.pause();
+            expect(await nft.paused()).to.equal(true);
+            
+            await expect(nft.burn(1)).to.be.revertedWith("Pausable: paused");
+        });
     });
 
     describe("Events", function () {

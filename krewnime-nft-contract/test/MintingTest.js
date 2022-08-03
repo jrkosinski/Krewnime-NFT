@@ -75,6 +75,11 @@ describe("KrewnimeNFT: Minting", function () {
             await nft.initialMint(); 
             expect(await nft.balanceOf(owner.address)).to.equal(constants.COLLECTION_SIZE); 
         }); 
+
+        it("cannot initialMint if totalSupply() > 0", async function () {
+            await nft.mintNext(addr1.address); 
+            await expect(nft.initialMint()).to.be.reverted;
+        }); 
         
         it("initialMint can be only called once", async function() {
             await nft.initialMint(); 

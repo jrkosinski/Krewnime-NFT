@@ -67,8 +67,7 @@ contract KrewnimeNFT is
     uint256 private _tokenIdCounter = 0;
     
     //security roles 
-    //TODO: change this to keccak256
-    bytes32 public constant MINTER_ROLE = "MINTER";
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER");
     
     //royalties (ERC-2981 implementation) - default to 0%
     address private royaltyReceiver = address(0); 
@@ -170,9 +169,10 @@ contract KrewnimeNFT is
     
     /**
      * @dev Mints the entire collection to the admin or owner (caller). 
+     * Will revert if totalSupply() > 0. 
      */
     function initialMint() external onlyRole(DEFAULT_ADMIN_ROLE) {
-        //TODO: require totalSupply to be 0
+        require(totalSupply() == 0, "KRW: totalSupply must be zero in order to call initialMint"); 
         for(uint n=0; n<collectionSize; n++) {
             _mintNext(msg.sender);
         }

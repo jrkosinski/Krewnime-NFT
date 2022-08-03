@@ -41,41 +41,36 @@ describe("KrewnimeNFT: Royalties (ERC-2981)", function () {
 		});
     });  
 
-    //TODO: move to access control tests 
 	describe("Manage Royalty Info", function () {
-		it("admin can set royalty info", async function () {
+		it("can set royalty info", async function () {
 			const num = 3; 
 			const denom = 1000; 
 			
+            //admin sets royalty info
             await nft.setRoyaltyInfo(addr1.address, num, denom); 
 			
+            //ensure royalty info set 
             const result = await nft.getRoyaltyInfo(); 
 			expectRoyaltyInfoEqual(result, addr1.address, num, denom); 
 		});
-		
-		it("non-admin cannot set royalty info", async function () {
-			await expect(nft.connect(addr1).setRoyaltyInfo(addr1.address, 1, 1)).to.be.reverted;
-		}); 
         
-		it("admin can clear royalty info", async function () {
+		it("can clear royalty info", async function () {
 			const num = 3; 
 			const denom = 1000; 
-			
+
+            //admin sets royalty info
             await nft.setRoyaltyInfo(addr1.address, num, denom); 
 			
             let result = await nft.getRoyaltyInfo(); 
 			expectRoyaltyInfoEqual(result, addr1.address, num, denom); 
-			
+
+            //admin clears royalty info
 			await nft.clearRoyaltyInfo(); 
-			
+
+            //ensure royalty info cleared 
             result = await nft.getRoyaltyInfo(); 
 			expectRoyaltiesDisabled(result); 
 		});
-		
-		it("non-admin cannot clear royalty info", async function () {
-            await nft.setRoyaltyInfo(addr1.address, 1, 1); 
-			await expect(nft.connect(addr1).clearRoyaltyInfo()).to.be.reverted;
-		}); 
     });  
 
 	describe("Calculate Royalties", function () {
