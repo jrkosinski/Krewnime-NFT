@@ -14,7 +14,7 @@ import "./openzeppelin/utils/Strings.sol";
 //DONE: comment up tests
 //DONE: rename NFTStore to TokenMintStore
 //DONE: clean up tests
-//TODO: revert constructor if bad values (e.g empty string) 
+//DONE: revert constructor if bad values (e.g empty string) 
 
 //TODO: add more tests - make sure coverage is 100% 
 //TODO: run solidity-coverage

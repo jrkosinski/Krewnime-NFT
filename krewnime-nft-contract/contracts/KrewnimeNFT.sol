@@ -310,8 +310,12 @@ contract KrewnimeNFT is
         super._beforeTokenTransfer(_from, _to, _tokenId);
     }
     
-    function _burn(uint256 _tokenId) internal override(ERC721, ERC721URIStorage) {
+    function _burn(uint256 _tokenId) internal override(ERC721, ERC721URIStorage) whenNotPaused {
         super._burn(_tokenId);
+    }
+    
+    function _approve(address to, uint256 tokenId) internal override whenNotPaused {
+        super._approve(to, tokenId);
     }
     
     function _concatUri(uint256 _tokenId) private view returns (string memory) {

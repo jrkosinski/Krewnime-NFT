@@ -45,6 +45,25 @@ contract TokenMintStore is Pausable, Ownable {
     mapping(address => uint256) private specialPrices;
     
     /**
+     * @dev Emitted when an attempt is made to withdraw ether from contract.
+     */
+    event Withdraw (
+        address sender,
+        uint256 amount,
+        bool success
+    );
+    
+    /**
+     * @dev Emitted when a request to mint completes without reverting. 
+     */
+    event Mint (
+        address sender, 
+        address to, 
+        uint256 amount,
+        uint256 number
+    );
+    
+    /**
      * @dev Constructor. 
      * 
      * @param _nftContract The address of the NFT contract whose items are being sold. 
@@ -107,7 +126,11 @@ contract TokenMintStore is Pausable, Ownable {
         require(address(nftContract) != address(0), "TokenMintStore: NFT address not set");
         require(msg.value >= getMintPrice(to), "TokenMintStore: transferred value less than price");
         
-        return nftContract.mintNext(to); 
+        uint256 id = nftContract.mintNext(to); 
+        
+        emit Mint(_msgSender(), to, msg.value, 1); 
+        
+        return id; 
     }
     
     /**
@@ -122,6 +145,9 @@ contract TokenMintStore is Pausable, Ownable {
         
         uint256 numberMinted = nftContract.multiMint(to, count); 
         require(msg.value >= (numberMinted * getMintPrice(to)), "TokenMintStore: transferred value less than price");
+        
+        emit Mint(_msgSender(), to, msg.value, numberMinted); 
+        
         return numberMinted;
     }
     
@@ -131,7 +157,10 @@ contract TokenMintStore is Pausable, Ownable {
      * @return True if successful. 
      */
     function withdrawAll() external onlyOwner returns (bool) {
-        (bool success,) = msg.sender.call{value:address(this).balance}(""); 
+        uint256 amount = address(this).balance;
+        (bool success,) = msg.sender.call{value:amount}(""); 
+        
+        emit Withdraw(_msgSender(), amount, success);
         return success;
     }
     
