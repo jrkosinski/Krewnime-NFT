@@ -3,7 +3,7 @@ module.exports = {
     TOKEN_NAME: "KrewnimeTest",
     TOKEN_SYMBOL: "KRW",
     TOKEN_CONTRACT_ID: "KrewnimeNFT",
-    STORE_CONTRACT_ID: "NFTStore",
+    STORE_CONTRACT_ID: "TokenMintStore",
     BASE_URI: "ipfs://ipfs_file_hash/",
     MAX_SUPPLY: 5,
     COLLECTION_SIZE : 5, 

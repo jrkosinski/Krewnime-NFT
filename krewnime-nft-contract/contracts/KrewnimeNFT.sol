@@ -30,7 +30,7 @@ import "./IMintable.sol";
  * - URI storage 
  * - role-based security
  * 
- * The business rules for selling and minting are stored separately in the NFTStore 
+ * The business rules for selling and minting are stored separately in the TokenMintStore 
  * contract. If the business rules change, that contract can be decommissioned and replaced
  * by another contract, which is assigned the Mintable role for the NFT, replacing the 
  * old store with the new one. 
@@ -94,7 +94,10 @@ contract KrewnimeNFT is
         ) ERC721(tokenName, tokenSymbol) {
             
         require(_maxSupply >= _collectionSize, "KRW: Collection size cannot exceed max supply.");
-            
+        require(bytes(tokenName).length > 0, "KRW: Token name should have a value"); 
+        require(bytes(tokenSymbol).length > 0, "KRW: Token symbol should have a value"); 
+        require(bytes(_baseUri).length > 0, "KRW: Base URI should have a value"); 
+        
         //if an address is passed, it is the owner 
         if (initialOwner == address(0)) {
             initialOwner = msg.sender;

@@ -10,16 +10,16 @@ import "./openzeppelin/utils/Counters.sol";
 import "./openzeppelin/utils/Strings.sol";
 
 //DONE: all comments in contract
+//DONE: all comments in js 
+//DONE: comment up tests
+//DONE: rename NFTStore to TokenMintStore
+//DONE: clean up tests
+//TODO: revert constructor if bad values (e.g empty string) 
 
-//TODO: all comments in js 
-//TODO: comment up tests
-//TODO: clean up tests
 //TODO: add more tests - make sure coverage is 100% 
 //TODO: run solidity-coverage
 //TODO: all todos
-//TODO: rename NFTStore to TokenMintStore
 //TODO: dynamic values in revert strings? (KRW)
-//TODO: revert constructor if bad values (e.g empty string) 
 
 /**
  * @title The Krewnime NFT Collection 
@@ -40,12 +40,12 @@ import "./openzeppelin/utils/Strings.sol";
  * - URI storage 
  * - role-based security
  * 
- * The business rules for selling and minting are stored separately in the NFTStore 
+ * The business rules for selling and minting are stored separately in the TokenMintStore 
  * contract. If the business rules change, that contract can be decommissioned and replaced
  * by another contract, which is assigned the Mintable role for the NFT, replacing the 
  * old store with the new one. 
  * 
- * NFT contracts which use the NFTStore to mint them, must implement this interface. 
+ * NFT contracts which use the TokenMintStore to mint them, must implement this interface. 
  */
 interface IMintable  {
 
