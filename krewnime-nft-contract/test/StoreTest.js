@@ -7,7 +7,7 @@ const testEvent = require("./util/testEvent");
 
 const provider = waffle.provider;
 
-describe.skip("KrewnimeNFT: Store", function () {		  
+describe("KrewnimeNFT: Store", function () {		  
 	let nft, store;		        //contracts
 	let owner, addr1, addr2; 	//accounts
 	

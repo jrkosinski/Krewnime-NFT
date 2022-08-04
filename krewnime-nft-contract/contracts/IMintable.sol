@@ -9,8 +9,9 @@ import "./openzeppelin/access/Ownable.sol";
 import "./openzeppelin/utils/Counters.sol";
 import "./openzeppelin/utils/Strings.sol";
 
-//INPROG: add more tests - make sure coverage is 100% 
-//TODO: run solidity-coverage
+//DONE: add more tests - make sure coverage is 100% 
+//DONE: run solidity-coverage
+
 //TODO: all todos
 //TODO: dynamic values in revert strings? (KRW)
 

@@ -175,7 +175,7 @@ contract TokenMintStore is Pausable, Ownable {
         price = specialPrices[buyer]; 
         if (price == 0) 
             price = mintPrice;
-        else if (price > mintPrice) 
+        else if (price > mintPrice) //TODO: add test case for this 
             price = mintPrice;
     }
 }

@@ -5,7 +5,7 @@ const constants = require("./util/constants");
 const deploy = require("./util/deploy");
 const testEvent = require("./util/testEvent");
 
-describe.skip("KrewnimeNFT: Pausable", function () {		  
+describe("KrewnimeNFT: Pausable", function () {		  
 	let nft;				//contracts
 	let owner, addr1; 		//accounts
 	

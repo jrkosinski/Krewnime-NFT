@@ -1,0 +1,1064 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/KrewnimeNFT.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> KrewnimeNFT.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>56/56</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">75% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>21/28</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>21/21</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>57/57</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">357×</span>
+<span class="cline-any cline-yes">357×</span>
+<span class="cline-any cline-yes">357×</span>
+<span class="cline-any cline-yes">357×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">357×</span>
+<span class="cline-any cline-yes">354×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">357×</span>
+<span class="cline-any cline-yes">357×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">357×</span>
+<span class="cline-any cline-yes">357×</span>
+<span class="cline-any cline-yes">357×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">71×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">33×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">49×</span>
+<span class="cline-any cline-yes">49×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">160×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">148×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">153×</span>
+<span class="cline-any cline-yes">151×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">151×</span>
+<span class="cline-any cline-yes">151×</span>
+<span class="cline-any cline-yes">148×</span>
+<span class="cline-any cline-yes">148×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.4;
+&nbsp;
+import "./openzeppelin/token/ERC721/ERC721.sol";
+import "./openzeppelin/token/ERC721/extensions/ERC721Enumerable.sol";
+import "./openzeppelin/token/ERC721/extensions/ERC721URIStorage.sol";
+import "./openzeppelin/interfaces/IERC2981.sol";
+import "./openzeppelin/security/Pausable.sol";
+import "./openzeppelin/utils/Counters.sol";
+import "./openzeppelin/utils/Strings.sol";
+import "./openzeppelin/access/AccessControl.sol";
+import "./IMintable.sol";
+&nbsp;
+/**
+ * @title The Krewnime NFT Collection 
+ * @author John R. Kosinski 
+ * 
+ * This project allows the single contract owner to mint all tokens at once or individually, 
+ * with the option to (a) add more tokens to the collection in the future and mint them, 
+ * and (b) to create a new version of the store contract if desired, in order to change the 
+ * rules for the selling and minting of NFTs. 
+ * 
+ * The design creates a basic NFT contract that allows for: 
+ * - pausing and unpausing 
+ * - changing the collection size (adding to the collection) 
+ * - receiving royalties (ERC-2981) 
+ * - enumerable 
+ * - mintable 
+ * - burnable 
+ * - URI storage 
+ * - role-based security
+ * 
+ * The business rules for selling and minting are stored separately in the TokenMintStore 
+ * contract. If the business rules change, that contract can be decommissioned and replaced
+ * by another contract, which is assigned the Mintable role for the NFT, replacing the 
+ * old store with the new one. 
+ * 
+ * The base use case here is for the collection owner to mint the entire collection 
+ * initially, to be sold on a marketplace. 
+ * 
+ * NOTE that this set of contracts is meant to be full-featured and not low-gas. A 
+ * low-gas version may be implemented in the future. 
+ * 
+ * Remedial action upon compromise is to pause the contract. 
+ */
+contract KrewnimeNFT is 
+        IMintable, 
+        ERC721, 
+        ERC721Enumerable, 
+        ERC721URIStorage, 
+        IERC2981,
+        Pausable, 
+        AccessControl {
+    using Strings for uint256; 
+    
+    //max number of items that can be minted; 1 by default
+    uint256 public maxSupply = 1; 
+    
+    //max number of items in collection; 1 by default 
+    uint256 public collectionSize = 1; 
+    
+    //base URI must be changed to a valid URI. &lt;n&gt;.png (sequential) will be appended 
+    //to the base URI to create URIs for newly minted tokens 
+    string public baseUri = "ipfs://{hash}/";
+    
+    //the token ID is a simple increment. The first one minted will be 1 
+    uint256 private _tokenIdCounter = 0;
+    
+    //security roles 
+    bytes32 internal constant MINTER_ROLE = keccak256("MINTER");
+    
+    //royalties (ERC-2981 implementation) - default to 0%
+    address private royaltyReceiver = address(0); 
+    uint96 private royaltyFeeNumerator = 0;
+    uint96 private royaltyFeeDenominator = 0; 
+&nbsp;
+    /**
+     * @dev Constructor. 
+     * 
+     * @param initialOwner Initial owner address (if 0x0, owner becomes msg.sender)
+     * @param tokenName NFT token name 
+     * @param tokenSymbol NFT token symbol 
+     * @param _collectionSize Number of items in the collection 
+     * @param _baseUri Base URI used in token URI generation (incremented)
+     */
+    constructor(
+        address initialOwner,
+        string memory tokenName, 
+        string memory tokenSymbol, 
+        uint256 _maxSupply, 
+        uint256 _collectionSize, 
+        string memory _baseUri
+        ) ERC721(tokenName, tokenSymbol) {
+            
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(_maxSupply &gt;= _collectionSize, "KRW: Collection size cannot exceed max supply.");
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(bytes(tokenName).length &gt; 0, "KRW: Token name should have a value"); 
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(bytes(tokenSymbol).length &gt; 0, "KRW: Token symbol should have a value"); 
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(bytes(_baseUri).length &gt; 0, "KRW: Base URI should have a value"); 
+        
+        //if an address is passed, it is the owner 
+        if (initialOwner == address(0)) {
+            initialOwner = msg.sender;
+        }
+        
+        //creator is admin and minter 
+        _grantRole(MINTER_ROLE, initialOwner);
+        _grantRole(DEFAULT_ADMIN_ROLE, initialOwner);
+        
+        //set state 
+        maxSupply = _maxSupply;
+        collectionSize = _collectionSize;
+        baseUri = _baseUri; 
+    }
+&nbsp;
+    /**
+     * @dev Pauses the contract execution. Functions like transfer and mint will 
+     * revert when contract is paused. 
+     */
+    function pause() external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _pause();
+    }
+&nbsp;
+    /**
+     * @dev Unpauses the contract execution. 
+     * Will revert if contract is not paused. 
+     */
+    function unpause() external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _unpause();
+    }
+    
+    /**
+     * @dev Owner can change the collectionSize - the number of items in the collection. 
+     * 
+     * @param _collectionSize The new value to set for collectionSize. 
+     */
+    function setCollectionSize(uint256 _collectionSize) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(maxSupply &gt;= _collectionSize, "KRW: Collection size cannot exceed max supply.");
+        collectionSize = _collectionSize;
+    }
+    
+    /**
+     * @dev Owner can change the maxSupply - the max number of items that can be minted. 
+     * 
+     * @param _maxSupply The new value to set for maxSupply. 
+     */
+    function setMaxSupply(uint256 _maxSupply) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(_maxSupply &gt;= collectionSize, "KRW: Collection size cannot exceed max supply.");
+        maxSupply = _maxSupply;
+    }
+    
+    /**
+     * @dev Allows the owner to change the base token URI used to generate new token URIs. 
+     * 
+     * @param _baseUri The new value of baseUri. 
+     */
+    function setBaseUri(string memory _baseUri) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        baseUri = _baseUri; 
+    }
+&nbsp;
+    /**
+     * @dev Allows authorized caller (minter role only) to mint one. 
+     * 
+     * @param to The address of the token recipient once minted. 
+     * @return The token ID of the minted token. 
+     */
+    function mintNext(address to) external override onlyRole(MINTER_ROLE) returns (uint256) {
+        return _mintNext(to);
+    }
+    
+    /**
+     * @dev Mints the entire collection to the admin or owner (caller). 
+     * Will revert if totalSupply() &gt; 0. 
+     */
+    function initialMint() external onlyRole(DEFAULT_ADMIN_ROLE) {
+        require(totalSupply() == 0, "KRW: totalSupply must be zero in order to call initialMint"); 
+        for(uint n=0; n&lt;collectionSize; n++) {
+            _mintNext(msg.sender);
+        }
+    }
+    
+    /**
+     * @dev Mints the specified number of items in the collection to the given address. 
+     * 
+     * If the address contains part of the collection already, starts from the last one 
+     * minted to that address. 
+     * The last index of the collection won't be exceeded. 
+     * @return The number of tokens minted. 
+     */
+    function multiMint(address to, uint256 count) external override onlyRole(MINTER_ROLE) returns (uint256) {
+        require(count &lt;= collectionSize, "KRW: Count cannot exceed collection size"); 
+        
+        //get the start index &amp; limit
+        uint256 startIndex = this.balanceOf(to); 
+        uint256 limit = startIndex + count; 
+        if (limit &gt; collectionSize) {
+            limit = collectionSize;
+        }
+        
+        //mint tokens and count number minted
+        uint256 numberMinted = 0;
+        for(uint n=startIndex; n&lt;limit; n++) {
+            _mintNext(to);
+            numberMinted++;
+        }
+        
+        return numberMinted;
+    }
+&nbsp;
+    /**
+     * @dev Owner of a token may burn or destroy it. 
+     * 
+     * @param _tokenId The id of the token to burn. 
+     */
+    function burn(uint256 _tokenId) external virtual {
+        //solhint-disable-next-line max-line-length
+        require(_isApprovedOrOwner(_msgSender(), _tokenId), "ERC721Burnable: caller is not owner nor approved");
+        
+        //burn it 
+        _burn(_tokenId);
+    }
+&nbsp;
+    /**
+     * @dev Returns the URI of the specified token. 
+     * 
+     * @param _tokenId The id of a token whose URI to return.
+     * @return string Token URI. 
+     */
+    function tokenURI(uint256 _tokenId)
+        public
+        view
+        override(ERC721, ERC721URIStorage)
+        returns (string memory)
+    {
+        return super.tokenURI(_tokenId);
+    }
+&nbsp;
+    /**
+     * @dev ERC-165 implementation. 
+     * 
+     * @param _interfaceId An ERC-165 interface id to query. 
+     * @return bool Whether or not the interface is supported by this contract. 
+     */
+    function supportsInterface(bytes4 _interfaceId)
+        public
+        view
+        override(IERC165, ERC721, ERC721Enumerable, AccessControl)
+        returns (bool)
+    {
+        return _interfaceId == type(IERC2981).interfaceId || super.supportsInterface(_interfaceId); 
+    }
+    
+    /**
+     * @dev ERC-2981: Sets the receiver and percentage for royalties for secondary sales on exchanges. 
+     *
+     * @param receiver The address to receive royalty payments. 
+     * @param feeDenominator- 
+     * @param feeNumerator -
+     */
+    function setRoyaltyInfo(address receiver, uint96 feeNumerator, uint96 feeDenominator) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        royaltyReceiver = receiver; 
+        royaltyFeeNumerator = feeNumerator; 
+        royaltyFeeDenominator = feeDenominator; 
+    }
+    
+    /**
+     * @dev ERC-2981: Gets the state information related to royalties on secondary sales.
+     * 
+     * @return receiver The address to receive royalty payments. 
+     * @return feeNumerator []
+     * @return feeDenominator []
+     */
+    function getRoyaltyInfo() external view returns (address receiver, uint96 feeNumerator, uint96 feeDenominator) {
+        return (royaltyReceiver, royaltyFeeNumerator, royaltyFeeDenominator);
+    }
+    
+    /**
+     * @dev ERC-2981: Disables royalty payments. Enable them by calling setRoyaltyInfo. 
+     */
+    function clearRoyaltyInfo() external onlyRole(DEFAULT_ADMIN_ROLE) {
+        royaltyReceiver = address(0); 
+        royaltyFeeDenominator = 0; 
+        royaltyFeeNumerator = 0; 
+    }
+    
+    /**
+     * @dev ERC-2981 implementation; provides royalty information to exchanges who may or may not use this 
+     * to award royalty percentages for future resales. This will return 0x0... for address and 0 
+     * for amount if royalties are not enabled for this contract. 
+     * Royalties are the same for all token IDs. 
+     * 
+     * @return receiver The address to receive the royalty fee. 
+     * @return amount The amount of royalty as a percentage of the sale price. 
+     */
+    function royaltyInfo(uint256 /*_tokenId*/, uint256 _salePrice) public view virtual override returns (address receiver, uint256 amount) {
+        amount = 0;
+        receiver = royaltyReceiver;
+        
+        if (receiver != address(0) &amp;&amp; royaltyFeeDenominator != 0) {
+            amount = (_salePrice * royaltyFeeNumerator) / royaltyFeeDenominator;
+        }
+    }
+    
+    
+    /// NON-PUBLIC METHODS 
+&nbsp;
+    function _beforeTokenTransfer(address _from, address _to, uint256 _tokenId)
+        internal
+        whenNotPaused
+        override(ERC721, ERC721Enumerable)  {
+        super._beforeTokenTransfer(_from, _to, _tokenId);
+    }
+    
+    function _burn(uint256 _tokenId) internal override(ERC721, ERC721URIStorage) whenNotPaused {
+        super._burn(_tokenId);
+    }
+    
+    function _approve(address to, uint256 tokenId) internal override whenNotPaused {
+        super._approve(to, tokenId);
+    }
+    
+    function _concatUri(uint256 _tokenId) private view returns (string memory) {
+        return string(abi.encodePacked(baseUri, _tokenId.toString(), ".json"));
+    }
+    
+    function _mintNext(address to) private returns (uint256) {
+        require(this.totalSupply() &lt; maxSupply, "KRW: Max supply exceeded"); 
+        <span class="missing-if-branch" title="else path not taken" >E</span>require(this.balanceOf(to) &lt; collectionSize, "KRW: Max allowed per user exceeded"); 
+            
+        uint256 tokenId = ++_tokenIdCounter;
+        _safeMint(to, tokenId);
+        _setTokenURI(tokenId, _concatUri(this.balanceOf(to)));
+        return tokenId;
+    }
+}</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Aug 04 2022 14:33:39 GMT+0700 (Indochina Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>
