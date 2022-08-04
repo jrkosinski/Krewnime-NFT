@@ -124,7 +124,7 @@ contract TokenMintStore is Pausable, Ownable {
      */
     function mintNext(address to) external payable whenNotPaused returns(uint256) {
         require(address(nftContract) != address(0), "TokenMintStore: NFT address not set");
-        require(msg.value >= getMintPrice(to), "TokenMintStore: transferred value less than price");
+        require(msg.value >= getMintPrice(_msgSender()), "TokenMintStore: transferred value less than price");
         
         uint256 id = nftContract.mintNext(to); 
         
@@ -144,7 +144,7 @@ contract TokenMintStore is Pausable, Ownable {
         require(address(nftContract) != address(0), "TokenMintStore: NFT address not set");
         
         uint256 numberMinted = nftContract.multiMint(to, count); 
-        require(msg.value >= (numberMinted * getMintPrice(to)), "TokenMintStore: transferred value less than price");
+        require(msg.value >= (numberMinted * getMintPrice(_msgSender())), "TokenMintStore: transferred value less than price");
         
         emit Mint(_msgSender(), to, msg.value, numberMinted); 
         
@@ -168,11 +168,11 @@ contract TokenMintStore is Pausable, Ownable {
      * @dev Returns either a custom or standard price as appropriate for the given 
      * recipient. 
      * 
-     * @param to The recipient for whom to get mint price. 
+     * @param buyer The recipient for whom to get mint price. 
      * @return price The appropriate price for the recipient. 
      */
-    function getMintPrice(address to) internal view returns (uint256 price) {
-        price = specialPrices[to]; 
+    function getMintPrice(address buyer) internal view returns (uint256 price) {
+        price = specialPrices[buyer]; 
         if (price == 0) 
             price = mintPrice;
         else if (price > mintPrice) 

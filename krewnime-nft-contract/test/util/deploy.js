@@ -12,5 +12,16 @@ module.exports = {
             constants.COLLECTION_SIZE, 
             constants.BASE_URI
         ]); 
+    },
+
+    deployStore: async (nftAddr) => {
+        return await utils.deployContractSilent(constants.STORE_CONTRACT_ID, [
+            nftAddr,
+            constants.MINT_PRICE   
+        ]);
+    }, 
+    
+    deployReceiver: async() => {
+        return await utils.deployContractSilent("TestERC721Receiver"); 
     }
 };

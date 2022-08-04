@@ -4,7 +4,7 @@ const utils = require("../scripts/lib/utils");
 const constants = require("./util/constants");
 const deploy = require("./util/deploy");
 
-describe("KrewnimeNFT: Basic", function () {		  
+describe.skip("KrewnimeNFT: Basic", function () {		  
 	let nft;				//contracts
 	let owner, addr1; 		//accounts
 	

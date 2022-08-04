@@ -9,14 +9,7 @@ import "./openzeppelin/access/Ownable.sol";
 import "./openzeppelin/utils/Counters.sol";
 import "./openzeppelin/utils/Strings.sol";
 
-//DONE: all comments in contract
-//DONE: all comments in js 
-//DONE: comment up tests
-//DONE: rename NFTStore to TokenMintStore
-//DONE: clean up tests
-//DONE: revert constructor if bad values (e.g empty string) 
-
-//TODO: add more tests - make sure coverage is 100% 
+//INPROG: add more tests - make sure coverage is 100% 
 //TODO: run solidity-coverage
 //TODO: all todos
 //TODO: dynamic values in revert strings? (KRW)

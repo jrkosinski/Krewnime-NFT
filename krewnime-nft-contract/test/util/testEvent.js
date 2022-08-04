@@ -16,7 +16,7 @@ async function testEvent(funcCall, eventName, expectedValues) {
     
     //expect that the event was fired
     const event = rc.events.find(event => event.event === eventName);
-    expect(event); 
+    expect(event.args); 
 
     //expect the expected values 
     if (expectedValues && expectedValues.length) {

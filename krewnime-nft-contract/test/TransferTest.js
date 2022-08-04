@@ -1,11 +1,10 @@
-const { expect } = require("chai");
+const { expect, util } = require("chai");
 const { ethers } = require("hardhat");
 const utils = require("../scripts/lib/utils");
 const constants = require("./util/constants");
 const deploy = require("./util/deploy");
 const testEvent = require("./util/testEvent"); 
 
-//TODO: test with receiver hook 
 //TODO: test approveAll
 
 describe("KrewnimeNFT: Transferring", function () {		  
@@ -18,6 +17,7 @@ describe("KrewnimeNFT: Transferring", function () {
         //contract
 		nft = await deploy.deployNFT();
         
+        //mint 3 to owner 
         nft.mintNext(owner.address); 
         nft.mintNext(owner.address); 
         nft.mintNext(owner.address); 
@@ -120,11 +120,11 @@ describe("KrewnimeNFT: Transferring", function () {
             ).to.be.revertedWith("ERC721: approval to current owner"); 
         }); 
 	});
-    
-    describe("Events", function() {
+
+    describe("Events", function () {
         it('transfer event fires on transferFrom', async () => {
-            testEvent(async () => await nft.transferFrom(owner.address, addr1.address, 100), 
-                "Transfer", [owner.address, addr1.address, 100]); 
+            testEvent(async () => await nft.transferFrom(owner.address, addr1.address, 100),
+                "Transfer", [owner.address, addr1.address, 100]);
         });
 
         it('approve event fires on approve', async () => {

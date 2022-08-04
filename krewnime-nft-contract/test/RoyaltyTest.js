@@ -4,7 +4,7 @@ const utils = require("../scripts/lib/utils");
 const constants = require("./util/constants");
 const deploy = require("./util/deploy");
 
-describe("KrewnimeNFT: Royalties (ERC-2981)", function () {		  
+describe.skip("KrewnimeNFT: Royalties (ERC-2981)", function () {		  
 	let nft;				//contracts
 	let owner, addr1; 		//accounts
 	

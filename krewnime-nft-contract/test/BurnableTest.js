@@ -5,7 +5,7 @@ const constants = require("./util/constants");
 const deploy = require("./util/deploy");
 const testEvent = require("./util/testEvent");
 
-describe("KrewnimeNFT: Burning", function () {		  
+describe.skip("KrewnimeNFT: Burning", function () {		  
 	let nft;					//contracts
 	let owner, addr1, addr2;	//accounts
 	

@@ -67,7 +67,7 @@ contract KrewnimeNFT is
     uint256 private _tokenIdCounter = 0;
     
     //security roles 
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER");
+    bytes32 internal constant MINTER_ROLE = keccak256("MINTER");
     
     //royalties (ERC-2981 implementation) - default to 0%
     address private royaltyReceiver = address(0); 
