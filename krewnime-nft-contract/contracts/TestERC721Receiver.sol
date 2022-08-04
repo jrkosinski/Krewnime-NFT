@@ -2,8 +2,6 @@
 pragma solidity ^0.8.4;
 
 import "./openzeppelin/token/ERC721/IERC721Receiver.sol";
-import "hardhat/console.sol"; 
-
 
 /**
  * @title The Krewnime NFT Collection 
@@ -14,15 +12,17 @@ import "hardhat/console.sol";
  */
 contract TestERC721Receiver is IERC721Receiver {
 
-    bytes4 private constant ERC721_RECEIVED = 0x150b7a02;
-    bool public received = false;
+    bool public received = false; //will be true if onERC721Received was called and not reverted
     
     enum Behavior {
-        Acknowledge, 
-        Revert,
-        Reject
+        Acknowledge,    //receives and returns correct value from onERC721Received
+        Revert,         //actively reverts in onERC721Received
+        Reject          //returns incorrect value from onERC721Received
     }
     
+    /**
+     * Emitted from onERC721Received. 
+     */
     event Received (
         address operator,
         address from,
@@ -32,10 +32,17 @@ contract TestERC721Receiver is IERC721Receiver {
     
     Behavior private behavior = Behavior.Acknowledge; 
     
+    /**
+     * Determines the test receiver's behavior upon receiving; it will either accept the 
+     * receive, revert it, or reject it (by returning an incorrect return value). 
+     */
     function setBehavior(Behavior _behavior) external {
         behavior = _behavior;
     }
     
+    /**
+     * Implementation of ERC721 receiver hook function. 
+     */
     function onERC721Received(
         address operator,
         address from,
