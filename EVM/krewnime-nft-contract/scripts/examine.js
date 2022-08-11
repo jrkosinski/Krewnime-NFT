@@ -3,7 +3,7 @@ const Runner = require("./lib/runner");
 const constants = require("./constants"); 
 
 //deployed token address goes here 
-const NFT_ADDR = "0x8f6D93283aB1dC0656bDA558dF9d12C211303ea6";
+const NFT_ADDR = "0xb454834F52107489E21b4Bcac42DA8E0dDdE7e7e";
 
 /**
  * Displays some information about the token contract. 
