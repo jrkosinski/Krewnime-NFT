@@ -7,8 +7,6 @@ import "./ERC2981.sol";
 //TODO: comment it up 
 //TODO: order the functions 
 //TODO: the collection -transfer problem
-//TODO: account for initialOwner in ctor, and add test 
-//TODO: replace to.be.reverted with to.be.revertedWith
 //TODO: pack the values 
 
 /**
@@ -40,11 +38,14 @@ import "./ERC2981.sol";
  * Remedial action upon compromise is to pause the contract. 
  */
 contract KrewnimeNFT is ERC721A, ERC2981 {
-    address public tokenAdminAddress;   //TODO: pack all values 
-    address public tokenMinterAddress;  
+    struct PackedValues {
+        uint96 maxSupply; 
+        uint96 collectionSize;
+        address tokenAdminAddress;
+        address tokenMinterAddress;
+    }
     
-    uint256 public maxSupply = 10; 
-    uint256 public collectionSize = 10; 
+    PackedValues public packedValues;
     
     error NotAuthorized();
     error CollectionSizeExceeded();
@@ -80,16 +81,21 @@ contract KrewnimeNFT is ERC721A, ERC2981 {
         address initialOwner,
         string memory tokenName, 
         string memory tokenSymbol,
-        uint256 _maxSupply, 
-        uint256 _collectionSize
+        uint96 _maxSupply, 
+        uint96 _collectionSize
     ) ERC721A(tokenName, tokenSymbol) {
         if (_collectionSize > _maxSupply) 
             revert MaxSupplyExceeded(); 
         
-        tokenAdminAddress = (initialOwner == address(0) ? msg.sender : initialOwner); 
-        maxSupply = _maxSupply;
-        collectionSize = _collectionSize;
+        packedValues.tokenAdminAddress = (initialOwner == address(0) ? msg.sender : initialOwner); 
+        packedValues.maxSupply = _maxSupply;
+        packedValues.collectionSize = _collectionSize;
     }
+    
+    function maxSupply() external view returns (uint96) { return packedValues.maxSupply; }
+    function collectionSize() external view returns (uint96) { return packedValues.collectionSize; }
+    function tokenAdminAddress() external view returns (address) { return packedValues.tokenAdminAddress; }
+    function tokenMinterAddress() external view returns (address) { return packedValues.tokenMinterAddress; }
     
     /**
      * @dev Allows authorized caller (minter role only) to mint one. 
@@ -110,14 +116,14 @@ contract KrewnimeNFT is ERC721A, ERC2981 {
      * @return The number of tokens minted. 
      */
     function multiMint(address to, uint256 count) external minterOnly returns(uint256) {
-        if (count > collectionSize) 
+        if (count > packedValues.collectionSize) 
             revert CollectionSizeExceeded(); 
         
         //get the start index & limit
         uint256 startIndex = this.balanceOf(to); 
         uint256 limit = startIndex + count; 
-        if (limit > collectionSize) {
-            limit = collectionSize;
+        if (limit > packedValues.collectionSize) {
+            limit = packedValues.collectionSize;
         }
         
         //mint tokens and count number minted
@@ -138,7 +144,7 @@ contract KrewnimeNFT is ERC721A, ERC2981 {
         if (totalSupply() > 0) 
             revert InitialMintAlreadyDone();
             
-        for(uint n=0; n<collectionSize; n++) {
+        for(uint n=0; n<packedValues.collectionSize; n++) {
             _mintNext(_msgSenderERC721A());
         }
     }
@@ -154,10 +160,10 @@ contract KrewnimeNFT is ERC721A, ERC2981 {
     
     function hasRole(bytes32 role, address account) public view returns (bool) {
         if (role == keccak256("ADMIN")) {
-            return (account == tokenAdminAddress);
+            return (account == packedValues.tokenAdminAddress);
         }
         else if (role == keccak256("MINTER")) {
-            return (account == tokenMinterAddress) || (account == tokenAdminAddress);
+            return (account == packedValues.tokenMinterAddress) || (account == packedValues.tokenAdminAddress);
         }
         
         return false;
@@ -168,7 +174,7 @@ contract KrewnimeNFT is ERC721A, ERC2981 {
     }
     
     function setMinter(address account) external adminOnly {
-        tokenMinterAddress = account;
+        packedValues.tokenMinterAddress = account;
     }
     
     /**
@@ -191,12 +197,12 @@ contract KrewnimeNFT is ERC721A, ERC2981 {
      * @param _maxSupply The new value to set for maxSupply. 
      * @param _collectionSize The new value to set for collectionSize. 
      */
-    function setSupplyParameters(uint256 _maxSupply, uint256 _collectionSize) external adminOnly {
+    function setSupplyParameters(uint96 _maxSupply, uint96 _collectionSize) external adminOnly {
        if (_collectionSize > _maxSupply)
             revert MaxSupplyExceeded(); 
             
-        maxSupply = _maxSupply;
-        collectionSize = _collectionSize;
+        packedValues.maxSupply = _maxSupply;
+        packedValues.collectionSize = _collectionSize;
     }
     
     /**
@@ -230,9 +236,9 @@ contract KrewnimeNFT is ERC721A, ERC2981 {
     /// NON-PUBLIC METHODS 
     
     function _mintNext(address to) private returns (uint256) {
-        if (this.totalSupply() >= maxSupply)
+        if (this.totalSupply() >= packedValues.maxSupply)
             revert MaxSupplyExceeded();
-        if (this.balanceOf(to) >= collectionSize)
+        if (this.balanceOf(to) >= packedValues.collectionSize)
             revert CollectionSizeExceeded();
             
         uint256 tokenId = _nextTokenId();
