@@ -7,7 +7,6 @@
     "test": "test"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.7.0",
     "abort-controller": "^3.0.0",
     "abstract-leveldown": "^6.3.0",
     "adm-zip": "^0.4.16",
@@ -54,7 +53,6 @@
     "call-bind": "^1.0.2",
     "camelcase": "^6.3.0",
     "caseless": "^0.12.0",
-    "chai": "^4.3.6",
     "chalk": "^2.4.2",
     "check-error": "^1.0.2",
     "chokidar": "^3.5.3",
@@ -98,10 +96,8 @@
     "eth-ens-namehash": "^2.0.8",
     "ethereum-bloom-filters": "^1.0.10",
     "ethereum-cryptography": "^0.1.3",
-    "ethereum-waffle": "^3.4.4",
     "ethereumjs-abi": "^0.6.8",
     "ethereumjs-util": "^7.1.4",
-    "ethers": "^5.6.4",
     "ethjs-unit": "^0.1.6",
     "ethjs-util": "^0.1.6",
     "event-target-shim": "^5.0.1",
@@ -292,7 +288,6 @@
     "side-channel": "^1.0.4",
     "slash": "^3.0.0",
     "solc": "^0.6.12",
-    "solidity-coverage": "^0.7.21",
     "source-map": "^0.6.1",
     "source-map-support": "^0.5.21",
     "spdx-correct": "^3.1.1",
@@ -358,7 +353,14 @@
     "yocto-queue": "^0.1.0"
   },
   "devDependencies": {
-    "mocha": "^9.2.2"
+    "@nomiclabs/hardhat-ethers": "^2.1.0",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@openzeppelin/contracts": "^4.7.2",
+    "chai": "^4.3.6",
+    "ethereum-waffle": "^3.4.4",
+    "ethers": "^5.6.9",
+    "mocha": "^9.2.2",
+    "solidity-coverage": "^0.7.21"
   },
   "scripts": {
     "test": "mocha"
