@@ -197,7 +197,7 @@ describe("KrewnimeNFT: Minting", function () {
         });
     }); 
 
-    describe.skip("Events", function () {
+    describe("Events", function () {
         it('transfer event fires on mint', async () => {
             testEvent(async () => await nft.mintNext(addr1.address),
                 "Transfer", [owner.address, addr1.address, 1]);

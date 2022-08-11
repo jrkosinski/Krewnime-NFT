@@ -12,7 +12,6 @@ module.exports = {
     
     roles: {
         ADMIN: ethers.utils.hexZeroPad(ethers.utils.hexlify(0), 32),
-        //TODO: make this keccak256
         MINTER: '0xf0887ba65ee2024ea881d91b74c2450ef19e1557f03bed3ea9f16b037cbe2dc9'
     }, 
     

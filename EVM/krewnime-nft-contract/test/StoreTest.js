@@ -119,7 +119,6 @@ describe("KrewnimeNFT: Store", function () {
         }); 
     });
 
-    //TODO: finish test cases 
     describe("Special Prices", function () {
         this.beforeEach(async function () {
             await nft.grantRole(constants.roles.MINTER, store.address);

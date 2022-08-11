@@ -110,8 +110,6 @@ describe("KrewnimeNFT: Access Control", function () {
             await expect(nft.connect(addr2).clearRoyaltyInfo()).to.be.reverted;
             await expect(nft.connect(addr1).clearRoyaltyInfo()).to.not.be.reverted;
         });
-
-        //TODO: make sure all functions are represented 
     }); 
     
 	describe("Minter Role", function () {

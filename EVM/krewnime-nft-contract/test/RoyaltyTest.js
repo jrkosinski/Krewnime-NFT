@@ -3,6 +3,7 @@ const { ethers } = require("hardhat");
 const utils = require("../scripts/lib/utils");
 const constants = require("./util/constants");
 const deploy = require("./util/deploy");
+const testEvent = require("./util/testEvent");
 
 describe("KrewnimeNFT: Royalties (ERC-2981)", function () {		  
 	let nft;				//contracts
@@ -120,6 +121,11 @@ describe("KrewnimeNFT: Royalties (ERC-2981)", function () {
 			expectRoyaltiesEqual(result, addr1.address, ethers.utils.parseEther("0.03")); 
 		}); 
     });  
-    
-    //TODO: is there an event for this? 
+
+    describe("Events", function () {
+        it('event fires when royalty info changed', async () => {
+            testEvent(async () => await nft.setRoyaltyInfo(addr1.address, 99, 1001),
+                "RoyaltyInfoChanged", [addr1.address, 99, 1001]);
+        });
+    });
 });
