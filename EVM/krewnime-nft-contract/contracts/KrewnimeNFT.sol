@@ -59,6 +59,9 @@ contract KrewnimeNFT is
     //max number of items in collection; 1 by default 
     uint256 public collectionSize = 1; 
     
+    // <user address> => <number of mints minted to that address in the past> 
+    mapping(address => uint256) private addressMintHistory; 
+    
     //base URI must be changed to a valid URI. <n>.png (sequential) will be appended 
     //to the base URI to create URIs for newly minted tokens 
     string public baseUri = "ipfs://{hash}/";
@@ -135,23 +138,16 @@ contract KrewnimeNFT is
     }
     
     /**
-     * @dev Owner can change the collectionSize - the number of items in the collection. 
-     * 
-     * @param _collectionSize The new value to set for collectionSize. 
-     */
-    function setCollectionSize(uint256 _collectionSize) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        require(maxSupply >= _collectionSize, "KRW: Collection size cannot exceed max supply.");
-        collectionSize = _collectionSize;
-    }
-    
-    /**
-     * @dev Owner can change the maxSupply - the max number of items that can be minted. 
+     * @dev Owner can change the maxSupply - the max number of items that can be minted, 
+     * and the collections size - the max that can be minted per owner. 
      * 
      * @param _maxSupply The new value to set for maxSupply. 
+     * @param _collectionSize The new value to set for collectionSize. 
      */
-    function setMaxSupply(uint256 _maxSupply) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        require(_maxSupply >= collectionSize, "KRW: Collection size cannot exceed max supply.");
+    function setSupplyParameters(uint256 _maxSupply, uint256 _collectionSize) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        require(_maxSupply >= _collectionSize, "KRW: Collection size cannot exceed max supply.");
         maxSupply = _maxSupply;
+        collectionSize = _collectionSize;
     }
     
     /**
@@ -332,11 +328,12 @@ contract KrewnimeNFT is
     
     function _mintNext(address to) private returns (uint256) {
         require(this.totalSupply() < maxSupply, "KRW: Max supply exceeded"); 
-        require(this.balanceOf(to) < collectionSize, "KRW: Max allowed per user exceeded"); 
+        require(addressMintHistory[to] < collectionSize, "NFT: Max allowed per user exceeded"); 
             
         uint256 tokenId = ++_tokenIdCounter;
         _safeMint(to, tokenId);
-        _setTokenURI(tokenId, _concatUri(this.balanceOf(to)));
+        addressMintHistory[to] += 1;
+        _setTokenURI(tokenId, _concatUri(addressMintHistory[to]));
         return tokenId;
     }
 }
