@@ -73,6 +73,12 @@ contract KrewnimeNFT is
     address private royaltyReceiver = address(0); 
     uint96 private royaltyFeeNumerator = 0;
     uint96 private royaltyFeeDenominator = 0; 
+    
+    event RoyaltyInfoChanged (
+        address receiver, 
+        uint96 feeNumerator,
+        uint96 feeDenominator
+    ); 
 
     /**
      * @dev Constructor. 
@@ -260,6 +266,8 @@ contract KrewnimeNFT is
         royaltyReceiver = receiver; 
         royaltyFeeNumerator = feeNumerator; 
         royaltyFeeDenominator = feeDenominator; 
+        
+        emit RoyaltyInfoChanged(receiver, feeNumerator, feeDenominator);
     }
     
     /**

@@ -9,12 +9,6 @@ import "./openzeppelin/access/Ownable.sol";
 import "./openzeppelin/utils/Counters.sol";
 import "./openzeppelin/utils/Strings.sol";
 
-//DONE: add more tests - make sure coverage is 100% 
-//DONE: run solidity-coverage
-
-//TODO: all todos
-//TODO: dynamic values in revert strings? (KRW)
-
 /**
  * @title The Krewnime NFT Collection 
  * @author John R. Kosinski 
