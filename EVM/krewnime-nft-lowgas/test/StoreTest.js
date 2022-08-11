@@ -33,7 +33,7 @@ describe(constants.TOKEN_CONTRACT_ID + ": Store", function () {
         });
 
         it("non-owner cannot set price", async function () {
-            await expect(store.connect(addr1).setMintPrice(constants.MINT_PRICE + 1)).to.be.reverted;
+            await expect(store.connect(addr1).setMintPrice(constants.MINT_PRICE + 1)).to.be.revertedWith("NotAuthorized()");
         });
     });
 
@@ -51,7 +51,7 @@ describe(constants.TOKEN_CONTRACT_ID + ": Store", function () {
             await nft.setMinter(constants.ZERO_ADDRESS);
             await expect(
                 store.connect(addr1).mintNext(addr1.address, { value: constants.MINT_PRICE })
-            ).to.be.reverted;
+            ).to.be.revertedWith("NotAuthorized()");
         });
     });
 
@@ -73,13 +73,13 @@ describe(constants.TOKEN_CONTRACT_ID + ": Store", function () {
         it("store won't mint if the price is not paid", async function () {
             await expect(
                 store.connect(addr1).mintNext(addr1.address, { value: constants.MINT_PRICE - 1 })
-            ).to.be.reverted;
+            ).to.be.revertedWith("InsufficientFeePaid()");
         });
 
         it("store won't multi-mint if the price is not paid", async function () {
             await expect(
                 store.connect(addr1).multiMint(addr1.address, 2, { value: constants.MINT_PRICE })
-            ).to.be.reverted;
+            ).to.be.revertedWith("InsufficientFeePaid()");
         });
     });
 
@@ -97,7 +97,7 @@ describe(constants.TOKEN_CONTRACT_ID + ": Store", function () {
 
         it("non-owner cannot withdraw funds", async function () {
             expect(await provider.getBalance(store.address)).to.equal(constants.MINT_PRICE * 3);
-            await expect(store.connect(addr1).withdrawAll()).to.be.reverted;
+            await expect(store.connect(addr1).withdrawAll()).to.be.revertedWith("NotAuthorized()");
         });
     });
 

@@ -27,7 +27,7 @@ describe(constants.TOKEN_CONTRACT_ID + ": Burning", function () {
             expect(await nft.balanceOf(addr1.address)).to.equal(0); 
             
             //expect burnt token to be nonexistent 
-            await expect(nft.ownerOf(1)).to.be.reverted;
+            await expect(nft.ownerOf(1)).to.be.revertedWith("OwnerQueryForNonexistentToken()");
 		});
 		
 		it("non-owner cannot burn another's token without approval", async function () {
@@ -37,7 +37,7 @@ describe(constants.TOKEN_CONTRACT_ID + ": Burning", function () {
             expect(await nft.ownerOf(1)).to.equal(addr1.address); 
 			await expect(
 				nft.connect(addr2).burn(1)
-			).to.be.reverted; 
+            ).to.be.revertedWith("TransferCallerNotOwnerNorApproved()"); 
 		});
 		
 		it("approved non-owner can burn another's token", async function () {
@@ -54,11 +54,11 @@ describe(constants.TOKEN_CONTRACT_ID + ": Burning", function () {
             expect(await nft.balanceOf(addr2.address)).to.equal(0); 
 
             //expect burnt token to be nonexistent 
-            await expect(nft.ownerOf(1)).to.be.reverted;
+            await expect(nft.ownerOf(1)).to.be.revertedWith("OwnerQueryForNonexistentToken()");
         });
         
         it("cannot burn non-existent token", async () => {
-            await expect(nft.connect(addr1).burn(1)).to.be.reverted;
+            await expect(nft.connect(addr1).burn(1)).to.be.revertedWith("OwnerQueryForNonexistentToken()");
         });
     });
 

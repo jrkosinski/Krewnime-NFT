@@ -41,7 +41,7 @@ describe(constants.TOKEN_CONTRACT_ID + ": Minting", function () {
         }); 
         
         it("cannot get balance of nonexistent token", async function () {
-            await expect(nft.ownerOf(1)).to.be.reverted;
+            await expect(nft.ownerOf(1)).to.be.revertedWith("OwnerQueryForNonexistentToken()");
         }); 
         
         it("can mint multiple tokens to same owner", async function () {
@@ -77,16 +77,16 @@ describe(constants.TOKEN_CONTRACT_ID + ": Minting", function () {
 
         it("cannot initialMint if totalSupply() > 0", async function () {
             await nft.mintNext(addr1.address); 
-            await expect(nft.initialMint()).to.be.reverted;
+            await expect(nft.initialMint()).to.be.revertedWith("InitialMintAlreadyDone()");
         }); 
         
         it("initialMint can be only called once", async function() {
             await nft.initialMint(); 
-            await expect(nft.initialMint()).to.be.reverted;
+            await expect(nft.initialMint()).to.be.revertedWith("InitialMintAlreadyDone()");
         }); 
         
         it("initialMint can only be called by owner/admin", async function() {
-            await expect(nft.connect(addr1).initialMint()).to.be.reverted;
+            await expect(nft.connect(addr1).initialMint()).to.be.revertedWith("NotAuthorized()");
         }); 
         
         it("mint next in collection", async function() {

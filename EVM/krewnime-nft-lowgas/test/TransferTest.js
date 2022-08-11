@@ -105,19 +105,13 @@ describe(constants.TOKEN_CONTRACT_ID + ": Transferring", function () {
         it("non-owner cannot transfer a token", async function () {
             await expect(
                 nft.transferFrom(addr1.address, addr2.address, 1)
-            ).to.be.reverted; 
+            ).to.be.revertedWith("TransferFromIncorrectOwner()"); 
         }); 
         
         it("non-owner cannot approve a token transfer", async function () {
             await expect(
                 nft.connect(addr1).approve(addr2.address, 1)
-            ).to.be.reverted; 
-        }); 
-        
-        it("cannot approve self", async function () {
-            await expect(
-                nft.approve(owner.address, 1)
-            ).to.be.reverted; 
+            ).to.be.revertedWith("ApprovalCallerNotOwnerNorApproved()"); 
         }); 
 	});
 

@@ -77,44 +77,44 @@ describe(constants.TOKEN_CONTRACT_ID + ": Access Control", function () {
         });
 
         it("non-admin cannot set minter", async function () {
-            await expect(nft.connect(addr2).setMinter(addr1.address)).to.be.reverted;
-            await expect(nft.connect(owner).setMinter(addr1.address)).to.not.be.reverted;
-            await expect(nft.connect(addr1).setMinter(addr2.address)).to.be.reverted;
+            await expect(nft.connect(addr2).setMinter(addr1.address)).to.be.revertedWith("NotAuthorized()");
+            await expect(nft.connect(owner).setMinter(addr1.address)).to.not.be.revertedWith("NotAuthorized()");
+            await expect(nft.connect(addr1).setMinter(addr2.address)).to.be.revertedWith("NotAuthorized()");
         });
         
 		it("non-admin cannot grant role", async function () {
-            //await expect(nft.connect(addr2).grantRole(constants.roles.MINTER, addr1.address)).to.be.reverted;
-            //await expect(nft.connect(addr1).grantRole(constants.roles.MINTER, addr1.address)).to.not.be.reverted;
+            //await expect(nft.connect(addr2).grantRole(constants.roles.MINTER, addr1.address)).to.be.revertedWith("NotAuthorized()");
+            //await expect(nft.connect(addr1).grantRole(constants.roles.MINTER, addr1.address)).to.not.be.revertedWith("NotAuthorized()");
 		});
         
 		it("non-admin cannot revoke role", async function () {
-            //await expect(nft.connect(addr2).revokeRole(constants.roles.MINTER, owner.address)).to.be.reverted;
-            //await expect(nft.connect(addr1).revokeRole(constants.roles.MINTER, owner.address)).to.not.be.reverted;
+            //await expect(nft.connect(addr2).revokeRole(constants.roles.MINTER, owner.address)).to.be.revertedWith("NotAuthorized()");
+            //await expect(nft.connect(addr1).revokeRole(constants.roles.MINTER, owner.address)).to.not.be.revertedWith("NotAuthorized()");
 		});
         
 		it("non-admin cannot pause", async function () {
-            //await expect(nft.connect(addr2).pause()).to.be.reverted;
-            //await expect(nft.connect(addr1).pause()).to.not.be.reverted;
+            //await expect(nft.connect(addr2).pause()).to.be.revertedWith("NotAuthorized()");
+            //await expect(nft.connect(addr1).pause()).to.not.be.revertedWith("NotAuthorized()");
 		});
         
 		it("non-admin cannot set supply parameters", async function () {
-            await expect(nft.connect(addr2).setSupplyParameters(10, 10)).to.be.reverted;
-            await expect(nft.connect(owner).setSupplyParameters(10, 10)).to.not.be.reverted;
+            await expect(nft.connect(addr2).setSupplyParameters(10, 10)).to.be.revertedWith("NotAuthorized()");
+            await expect(nft.connect(owner).setSupplyParameters(10, 10)).to.not.be.revertedWith("NotAuthorized()");
         });
         
 		it("non-admin set base URI", async function () {
-            //await expect(nft.connect(addr2).setBaseUri("uri")).to.be.reverted;
-            //await expect(nft.connect(addr1).setBaseUri("uri")).to.not.be.reverted;
+            //await expect(nft.connect(addr2).setBaseUri("uri")).to.be.revertedWith("NotAuthorized()");
+            //await expect(nft.connect(addr1).setBaseUri("uri")).to.not.be.revertedWith("NotAuthorized()");
 		});
 
         it("non-admin cannot set royalty info", async function () {
-            //await expect(nft.connect(addr2).setRoyaltyInfo(addr1.address, 3, 1000)).to.be.reverted;
-            //await expect(nft.connect(addr1).setRoyaltyInfo(addr1.address, 3, 1000)).to.not.be.reverted;
+            //await expect(nft.connect(addr2).setRoyaltyInfo(addr1.address, 3, 1000)).to.be.revertedWith("NotAuthorized()");
+            //await expect(nft.connect(addr1).setRoyaltyInfo(addr1.address, 3, 1000)).to.not.be.revertedWith("NotAuthorized()");
         });
 
         it("non-admin cannot clear royalty info", async function () {
-            //await expect(nft.connect(addr2).clearRoyaltyInfo()).to.be.reverted;
-            //await expect(nft.connect(addr1).clearRoyaltyInfo()).to.not.be.reverted;
+            //await expect(nft.connect(addr2).clearRoyaltyInfo()).to.be.revertedWith("NotAuthorized()");
+            //await expect(nft.connect(addr1).clearRoyaltyInfo()).to.not.be.revertedWith("NotAuthorized()");
         });
     }); 
     
@@ -125,7 +125,7 @@ describe(constants.TOKEN_CONTRACT_ID + ": Access Control", function () {
 		});
         
 		it("non-minter cannot mint", async function () {
-			await expect(nft.connect(addr1).mintNext(addr1.address)).to.be.reverted;
+            await expect(nft.connect(addr1).mintNext(addr1.address)).to.be.revertedWith("NotAuthorized()");
 		});
         
 		it("minter role can mint", async function () {
