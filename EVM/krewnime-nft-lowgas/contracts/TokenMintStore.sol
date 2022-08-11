@@ -41,6 +41,10 @@ contract TokenMintStore {
     uint256 public mintPrice = 0; 
     address owner = address(0); 
     
+    error NotAuthorized();
+    error TokenAddressNotSet();
+    error InsufficientFeePaid();
+    
     /**
      * @dev Emitted when an attempt is made to withdraw ether from contract.
      */
@@ -78,7 +82,8 @@ contract TokenMintStore {
      * @param _mintPrice The price to set. 
      */
     function setMintPrice(uint256 _mintPrice) external  {
-        require(msg.sender == owner, "Permission denied");
+        if(msg.sender != owner)
+            revert NotAuthorized();
         mintPrice = _mintPrice;
     }
     
@@ -89,8 +94,11 @@ contract TokenMintStore {
      * @return tokenId The ID of the minted token. 
      */
     function mintNext(address to) external payable returns(uint256) {
-        require(address(nftContract) != address(0), "TokenMintStore: NFT address not set");
-        require(msg.value >= getMintPrice(msg.sender), "TokenMintStore: transferred value less than price");
+        if (address(nftContract) == address(0)) 
+            revert TokenAddressNotSet(); 
+            
+        if (msg.value < getMintPrice(msg.sender))
+            revert InsufficientFeePaid(); 
         
         uint256 id = nftContract.mintNext(to); 
         
@@ -107,10 +115,12 @@ contract TokenMintStore {
      * @return The number minted and sold. 
      */
     function multiMint(address to, uint256 count) external payable returns (uint256) {
-        require(address(nftContract) != address(0), "TokenMintStore: NFT address not set");
+        if (address(nftContract) == address(0)) 
+            revert TokenAddressNotSet(); 
         
         uint256 numberMinted = nftContract.multiMint(to, count); 
-        require(msg.value >= (numberMinted * getMintPrice(msg.sender)), "TokenMintStore: transferred value less than price");
+        if (msg.value < (numberMinted * getMintPrice(msg.sender)))
+            revert InsufficientFeePaid(); 
         
         emit Mint(msg.sender, to, msg.value, numberMinted); 
         
@@ -123,7 +133,8 @@ contract TokenMintStore {
      * @return True if successful. 
      */
     function withdrawAll() external returns (bool) {
-        require(msg.sender == owner, "Permission denied");
+        if(msg.sender != owner)
+            revert NotAuthorized();
         
         uint256 amount = address(this).balance;
         (bool success,) = owner.call{value:amount}(""); 

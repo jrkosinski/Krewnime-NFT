@@ -2,10 +2,11 @@
 pragma solidity ^0.8.4;
 
 import "./ERC721A/ERC721A.sol"; 
+import "./ERC2981.sol";
 
 //TODO: comment it up 
 //TODO: order the functions 
-//TODO: remove change to ERC721, and remove test 
+//TODO: the collection -transfer problem
 //TODO: account for initialOwner in ctor, and add test 
 //TODO: replace to.be.reverted with to.be.revertedWith
 //TODO: pack the values 
@@ -38,7 +39,7 @@ import "./ERC721A/ERC721A.sol";
  * 
  * Remedial action upon compromise is to pause the contract. 
  */
-contract KrewnimeNFT is ERC721A {
+contract KrewnimeNFT is ERC721A, ERC2981 {
     address public tokenAdminAddress;   //TODO: pack all values 
     address public tokenMinterAddress;  
     
@@ -198,6 +199,35 @@ contract KrewnimeNFT is ERC721A {
         collectionSize = _collectionSize;
     }
     
+    /**
+     * See { ERC2981-setRoyaltyInfo }
+     */
+    function setRoyaltyInfo(address receiver, uint96 feeNumerator, uint96 feeDenominator) public override (ERC2981) adminOnly {
+        super.setRoyaltyInfo(receiver, feeNumerator, feeDenominator); 
+    }
+    
+    /**
+     * See { ERC2981-getRoyaltyInfo }
+     */
+    function getRoyaltyInfo() public override (ERC2981) view returns (address receiver, uint96 feeNumerator, uint96 feeDenominator) {
+        return super.getRoyaltyInfo();
+    }
+    
+    /**
+     * See { ERC2981-clearRoyaltyInfo }
+     */
+    function clearRoyaltyInfo() public override (ERC2981) adminOnly {
+        super.clearRoyaltyInfo();
+    }
+    
+    /**
+     * See { ERC2981-_royaltyInfo }
+     */
+    function royaltyInfo(uint256 _tokenId, uint256 _salePrice) public view virtual returns (address receiver, uint256 amount) {
+        return _royaltyInfo(_tokenId, _salePrice);
+    }
+    
+    /// NON-PUBLIC METHODS 
     
     function _mintNext(address to) private returns (uint256) {
         if (this.totalSupply() >= maxSupply)

@@ -423,7 +423,6 @@ contract ERC721A is IERC721A {
      * Emits an {Approval} event.
      */
     function approve(address to, uint256 tokenId) public virtual override {
-        if (to == _msgSenderERC721A()) revert ApproveToCaller();
         address owner = ownerOf(tokenId);
 
         if (_msgSenderERC721A() != owner) 
@@ -460,8 +459,6 @@ contract ERC721A is IERC721A {
      * Emits an {ApprovalForAll} event.
      */
     function setApprovalForAll(address operator, bool approved) public virtual override {
-        if (operator == _msgSenderERC721A()) revert ApproveToCaller();
-
         _operatorApprovals[_msgSenderERC721A()][operator] = approved;
         emit ApprovalForAll(_msgSenderERC721A(), operator, approved);
     }
