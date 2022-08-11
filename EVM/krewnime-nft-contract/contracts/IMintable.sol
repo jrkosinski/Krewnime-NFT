@@ -1,14 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "./openzeppelin/token/ERC721/ERC721.sol";
-import "./openzeppelin/token/ERC721/extensions/ERC721Enumerable.sol";
-import "./openzeppelin/token/ERC721/extensions/ERC721URIStorage.sol";
-import "./openzeppelin/security/Pausable.sol";
-import "./openzeppelin/access/Ownable.sol";
-import "./openzeppelin/utils/Counters.sol";
-import "./openzeppelin/utils/Strings.sol";
-
 /**
  * @title The Krewnime NFT Collection 
  * @author John R. Kosinski 

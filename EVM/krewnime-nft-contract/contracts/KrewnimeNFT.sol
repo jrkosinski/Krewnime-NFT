@@ -10,6 +10,7 @@ import "./openzeppelin/utils/Counters.sol";
 import "./openzeppelin/utils/Strings.sol";
 import "./openzeppelin/access/AccessControl.sol";
 import "./IMintable.sol";
+import "./ERC2981.sol";
 
 /**
  * @title The Krewnime NFT Collection 
@@ -50,7 +51,8 @@ contract KrewnimeNFT is
         ERC721URIStorage, 
         IERC2981,
         Pausable, 
-        AccessControl {
+        AccessControl,
+        ERC2981 {
     using Strings for uint256; 
     
     //max number of items that can be minted; 1 by default
@@ -71,17 +73,6 @@ contract KrewnimeNFT is
     
     //security roles 
     bytes32 internal constant MINTER_ROLE = keccak256("MINTER");
-    
-    //royalties (ERC-2981 implementation) - default to 0%
-    address private royaltyReceiver = address(0); 
-    uint96 private royaltyFeeNumerator = 0;
-    uint96 private royaltyFeeDenominator = 0; 
-    
-    event RoyaltyInfoChanged (
-        address receiver, 
-        uint96 feeNumerator,
-        uint96 feeDenominator
-    ); 
 
     /**
      * @dev Constructor. 
@@ -89,6 +80,7 @@ contract KrewnimeNFT is
      * @param initialOwner Initial owner address (if 0x0, owner becomes msg.sender)
      * @param tokenName NFT token name 
      * @param tokenSymbol NFT token symbol 
+     * @param _maxSupply Number of items allowed to be minted
      * @param _collectionSize Number of items in the collection 
      * @param _baseUri Base URI used in token URI generation (incremented)
      */
@@ -252,56 +244,31 @@ contract KrewnimeNFT is
     }
     
     /**
-     * @dev ERC-2981: Sets the receiver and percentage for royalties for secondary sales on exchanges. 
-     *
-     * @param receiver The address to receive royalty payments. 
-     * @param feeDenominator- 
-     * @param feeNumerator -
+     * See { ERC2981-setRoyaltyInfo }
      */
-    function setRoyaltyInfo(address receiver, uint96 feeNumerator, uint96 feeDenominator) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        royaltyReceiver = receiver; 
-        royaltyFeeNumerator = feeNumerator; 
-        royaltyFeeDenominator = feeDenominator; 
-        
-        emit RoyaltyInfoChanged(receiver, feeNumerator, feeDenominator);
+    function setRoyaltyInfo(address receiver, uint96 feeNumerator, uint96 feeDenominator) public override (ERC2981) onlyRole(DEFAULT_ADMIN_ROLE) {
+        super.setRoyaltyInfo(receiver, feeNumerator, feeDenominator); 
     }
     
     /**
-     * @dev ERC-2981: Gets the state information related to royalties on secondary sales.
-     * 
-     * @return receiver The address to receive royalty payments. 
-     * @return feeNumerator []
-     * @return feeDenominator []
+     * See { ERC2981-getRoyaltyInfo }
      */
-    function getRoyaltyInfo() external view returns (address receiver, uint96 feeNumerator, uint96 feeDenominator) {
-        return (royaltyReceiver, royaltyFeeNumerator, royaltyFeeDenominator);
+    function getRoyaltyInfo() public override (ERC2981) view returns (address receiver, uint96 feeNumerator, uint96 feeDenominator) {
+        return super.getRoyaltyInfo();
     }
     
     /**
-     * @dev ERC-2981: Disables royalty payments. Enable them by calling setRoyaltyInfo. 
+     * See { ERC2981-clearRoyaltyInfo }
      */
-    function clearRoyaltyInfo() external onlyRole(DEFAULT_ADMIN_ROLE) {
-        royaltyReceiver = address(0); 
-        royaltyFeeDenominator = 0; 
-        royaltyFeeNumerator = 0; 
+    function clearRoyaltyInfo() public override (ERC2981) onlyRole(DEFAULT_ADMIN_ROLE) {
+        super.clearRoyaltyInfo();
     }
     
     /**
-     * @dev ERC-2981 implementation; provides royalty information to exchanges who may or may not use this 
-     * to award royalty percentages for future resales. This will return 0x0... for address and 0 
-     * for amount if royalties are not enabled for this contract. 
-     * Royalties are the same for all token IDs. 
-     * 
-     * @return receiver The address to receive the royalty fee. 
-     * @return amount The amount of royalty as a percentage of the sale price. 
+     * See { ERC2981-_royaltyInfo }
      */
-    function royaltyInfo(uint256 /*_tokenId*/, uint256 _salePrice) public view virtual override returns (address receiver, uint256 amount) {
-        amount = 0;
-        receiver = royaltyReceiver;
-        
-        if (receiver != address(0) && royaltyFeeDenominator != 0) {
-            amount = (_salePrice * royaltyFeeNumerator) / royaltyFeeDenominator;
-        }
+    function royaltyInfo(uint256 _tokenId, uint256 _salePrice) public view virtual override returns (address receiver, uint256 amount) {
+        return _royaltyInfo(_tokenId, _salePrice);
     }
     
     
