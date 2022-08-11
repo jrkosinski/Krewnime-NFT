@@ -1,13 +1,12 @@
 const { expect, util } = require("chai");
 const { ethers } = require("hardhat");
-const utils = require("../scripts/lib/utils");
 const constants = require("./util/constants");
 const deploy = require("./util/deploy");
 const testEvent = require("./util/testEvent"); 
 
 //TODO: test approveAll
 
-describe("KrewnimeNFT: Transferring", function () {		  
+describe(constants.TOKEN_CONTRACT_ID + ": Transferring", function () {		  
 	let nft;					//contracts
 	let owner, addr1, addr2;	//accounts
 	

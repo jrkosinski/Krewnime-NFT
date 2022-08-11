@@ -1,11 +1,10 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
-const utils = require("../scripts/lib/utils");
 const constants = require("./util/constants");
 const deploy = require("./util/deploy");
 const testEvent = require("./util/testEvent");
 
-describe("KrewnimeNFT: Pausable", function () {		  
+describe(constants.TOKEN_CONTRACT_ID + ": Pausable", function () {		  
 	let nft;				//contracts
 	let owner, addr1; 		//accounts
 	

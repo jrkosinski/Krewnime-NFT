@@ -1,10 +1,9 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
-const utils = require("../scripts/lib/utils");
 const constants = require("./util/constants");
 const deploy = require("./util/deploy");
 
-describe("KrewnimeNFT: Introspection (ERC-165)", function () {		  
+describe(constants.TOKEN_CONTRACT_ID + ": Introspection (ERC-165)", function () {		  
 	let nft;				//contracts
 	let owner, addr1; 		//accounts
 	

@@ -1,6 +1,6 @@
 module.exports = {
 
-    TOKEN_NAME: "KrewnimeTest",
+    TOKEN_NAME: "Krewnime NFT",
     TOKEN_SYMBOL: "KRW",
     TOKEN_CONTRACT_ID: "KrewnimeNFT",
     STORE_CONTRACT_ID: "TokenMintStore",
@@ -15,7 +15,6 @@ module.exports = {
         MINTER: '0xf0887ba65ee2024ea881d91b74c2450ef19e1557f03bed3ea9f16b037cbe2dc9'
     }, 
     
-    //TODO: calculate these instead of hard-coding
     interfaceIds : {
         IERC2981:           "0x2a55205a", 
         IERC165:            "0x01ffc9a7", 

@@ -1,12 +1,10 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
-const { constant } = require("lodash");
-const utils = require("../scripts/lib/utils");
 const constants = require("./util/constants");
 const deploy = require("./util/deploy");
 const testEvent = require("./util/testEvent");
 
-describe("KrewnimeNFT: Minting", function () {
+describe(constants.TOKEN_CONTRACT_ID + ": Minting", function () {
     let nft;                    //contracts
     let owner, addr1, addr2;    //addresses
     
@@ -93,10 +91,9 @@ describe("KrewnimeNFT: Minting", function () {
         
         it("mint next in collection", async function() {
             const collectionSize = 4; 
-            await nft.setCollectionSize(collectionSize); 
             
             //max supply is twice the collection size; so two sets can be minted
-            await nft.setMaxSupply(collectionSize * 2);
+            await nft.setSupplyParameters(collectionSize * 2, collectionSize);
             
             //mint one collection set to owner 
             await nft.initialMint(); 
@@ -113,10 +110,9 @@ describe("KrewnimeNFT: Minting", function () {
         
         it("mint remaining in collection", async function () {
             const collectionSize = 4;
-            await nft.setCollectionSize(collectionSize);
-
+            
             //max supply is twice the collection size; so two sets can be minted
-            await nft.setMaxSupply(collectionSize * 2);
+            await nft.setSupplyParameters(collectionSize * 2, collectionSize);
 
             //mint one collection set to owner 
             await nft.initialMint(); 
@@ -135,17 +131,22 @@ describe("KrewnimeNFT: Minting", function () {
     }); 
     
     describe("Token URIs", function() {
+        
+        async function verifyTokenUri(tokenId, uriIndex) {
+            expect(await nft.tokenURI(tokenId)).to.equal(constants.BASE_URI + uriIndex.toString() + ".json"); 
+        }
+        
         it("correct initial token URIs", async function() {
             await nft.initialMint(); 
             
             //check that token URIs are all as expected 
             for (let n=1; n<=constants.COLLECTION_SIZE; n++) {
-                expect(await nft.tokenURI(n)).to.equal(constants.BASE_URI + n.toString() + ".json"); 
+                await verifyTokenUri(n, n); 
             }
         }); 
         
         it("correct multi-set token URIs", async function() {
-            await nft.setMaxSupply(constants.COLLECTION_SIZE * 3);
+            await nft.setSupplyParameters(constants.COLLECTION_SIZE * 3, constants.COLLECTION_SIZE);
             await nft.initialMint(); 
             await nft.multiMint(addr1.address, constants.COLLECTION_SIZE); 
             await nft.multiMint(addr2.address, constants.COLLECTION_SIZE); 
@@ -153,13 +154,49 @@ describe("KrewnimeNFT: Minting", function () {
             //check that token URIs are all as expected when multiple sets are minted
             let tokenId = 1;
             for (let n=0; n<3; n++) {
-                for (let i=1; i<=constants.COLLECTION_SIZE; i++) {
-                    expect(await nft.tokenURI(tokenId)).to.equal(constants.BASE_URI + i.toString() + ".json"); 
+                for (let i = 1; i <= constants.COLLECTION_SIZE; i++) {
+                    await verifyTokenUri(tokenId, i); 
                     tokenId++; 
                 }
             }
         }); 
-    });
+        
+        it("mint and transfer and mint again", async function () {
+            await nft.setSupplyParameters(10, 5); 
+            await nft.initialMint(); 
+            
+            //tokens 6 & 7 go to addr1
+            await nft.mintNext(addr1.address);
+            await nft.mintNext(addr1.address);
+
+            //verify ownership and uris
+            expect(await nft.ownerOf(6)).to.equal(addr1.address);
+            expect(await nft.ownerOf(7)).to.equal(addr1.address);
+            
+            //uris should be 1 & 2 
+            await verifyTokenUri(6, 1);
+            await verifyTokenUri(7, 2); 
+
+            //transfer token 7 to another user 
+            await nft.connect(addr1).transferFrom(addr1.address, addr2.address, 7);
+
+            //verify new ownership 
+            expect(await nft.ownerOf(6)).to.equal(addr1.address);
+            expect(await nft.ownerOf(7)).to.equal(addr2.address);
+
+            //mint 2 more to addr1 (tokens 8 & 9)
+            await nft.mintNext(addr1.address);
+            await nft.mintNext(addr1.address);
+            
+            //verify ownership 
+            expect(await nft.ownerOf(8)).to.equal(addr1.address);
+            expect(await nft.ownerOf(9)).to.equal(addr1.address);
+            
+            //uris should be 3 and 4 
+            await verifyTokenUri(8, 3);
+            await verifyTokenUri(9, 4); 
+        });
+    }); 
 
     describe("Receiver Hook", function () {
         let receiver;

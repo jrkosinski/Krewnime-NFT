@@ -1,13 +1,12 @@
 const { expect } = require("chai");
 const { ethers, waffle } = require("hardhat");
-const utils = require("../scripts/lib/utils");
 const constants = require("./util/constants");
 const deploy = require("./util/deploy");
 const testEvent = require("./util/testEvent");
 
 const provider = waffle.provider;
 
-describe("KrewnimeNFT: Store", function () {		  
+describe(constants.TOKEN_CONTRACT_ID + ": Store", function () {		  
 	let nft, store;		        //contracts
 	let owner, addr1, addr2; 	//accounts
 	
