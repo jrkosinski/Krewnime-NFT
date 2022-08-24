@@ -55,50 +55,70 @@ describe(constants.TOKEN_CONTRACT_ID + ": Transferring", function () {
             expect(await nft.balanceOf(addr2.address)).to.equal(1); 
             expect(await nft.ownerOf(1)).to.equal(addr2.address); 
 		});
-	});
-	
-	describe("Approve and Transfer", function() {
-		it("owner can approve", async function () {
-            await nft.approve(addr1.address, 1); 
-            expect(await nft.getApproved(1)).to.equal(addr1.address); 
-		});
-          
-		it("approve and transfer", async function () {
-            await nft.approve(addr1.address, 1); 
-            await nft.connect(addr1).transferFrom(owner.address, addr1.address, 1); 
+    });
+
+    describe("Approve All", function () {
+        it("owner can set approval for all", async function () {
+            await nft.setApprovalForAll(addr1.address, true);
+            expect(await nft.isApprovedForAll(owner.address, addr1.address)).to.equal(true);
+        });
+
+        it("owner can revoke approval for all", async function () {
+            await nft.setApprovalForAll(addr1.address, true);
+            expect(await nft.isApprovedForAll(owner.address, addr1.address)).to.equal(true);
+
+            await nft.setApprovalForAll(addr1.address, false);
+            expect(await nft.isApprovedForAll(owner.address, addr1.address)).to.equal(false);
+        });
+
+        it("setting approval for all does not revoke previous approval", async function () {
+            await nft.setApprovalForAll(addr1.address, true);
+            expect(await nft.isApprovedForAll(owner.address, addr1.address)).to.equal(true);
+            expect(await nft.isApprovedForAll(owner.address, addr2.address)).to.equal(false);
+
+            await nft.setApprovalForAll(addr2.address, true);
+            expect(await nft.isApprovedForAll(owner.address, addr1.address)).to.equal(true);
+            expect(await nft.isApprovedForAll(owner.address, addr2.address)).to.equal(true);
+        });
+
+        it("approve for all and transfer", async function () {
+            await nft.setApprovalForAll(addr1.address, true);
+
+            await nft.connect(addr1).transferFrom(owner.address, addr1.address, 1);
 
             //check that transfer was credited and debited
             expect(await nft.balanceOf(owner.address)).to.equal(2);
             expect(await nft.balanceOf(addr1.address)).to.equal(1);
             expect(await nft.ownerOf(1)).to.equal(addr1.address);
-		});
-        
-        it("approve and transfer to a third user", async function () {
-            await nft.approve(addr1.address, 1); 
-            await nft.connect(addr1).transferFrom(owner.address, addr2.address, 1); 
+        });
+
+        it("approve for all and transfer to a third user", async function () {
+            await nft.setApprovalForAll(addr1.address, true);
+
+            await nft.connect(addr1).transferFrom(owner.address, addr2.address, 1);
 
             //check that transfer was credited and debited
-            expect(await nft.balanceOf(owner.address)).to.equal(2); 
-            expect(await nft.balanceOf(addr2.address)).to.equal(1); 
+            expect(await nft.balanceOf(owner.address)).to.equal(2);
+            expect(await nft.balanceOf(addr2.address)).to.equal(1);
             expect(await nft.ownerOf(1)).to.equal(addr2.address);
-        }); 
-        
-        it("cannot approve and double transfer", async function () {
-            await nft.approve(addr1.address, 1);
-            
+        });
+
+        it("cannot set approval for all and double transfer", async function () {
+            await nft.setApprovalForAll(addr1.address, true);
+
             //transfer from owner to addr2, using addr1 as middleman after approval
-            await nft.connect(addr1).transferFrom(owner.address, addr2.address, 1); 
-            
+            await nft.connect(addr1).transferFrom(owner.address, addr2.address, 1);
+
             //try to transfer another one
             await expect(
                 nft.connect(addr1).transferFrom(addr2.address, addr1.address, 1)
             ).to.be.revertedWith("ERC721: caller is not token owner nor approved");
-            
-            expect(await nft.balanceOf(owner.address)).to.equal(2); 
-            expect(await nft.balanceOf(addr2.address)).to.equal(1); 
+
+            expect(await nft.balanceOf(owner.address)).to.equal(2);
+            expect(await nft.balanceOf(addr2.address)).to.equal(1);
             expect(await nft.ownerOf(1)).to.equal(addr2.address);
-        }); 
-	});
+        });
+    });
 	
 	describe("Exceptional Cases", function() {
         it("non-owner cannot transfer a token", async function () {
