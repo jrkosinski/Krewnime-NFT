@@ -24,7 +24,6 @@ describe(constants.TOKEN_CONTRACT_ID + ": Store", function () {
 			expect(await store.mintPrice()).to.equal(constants.MINT_PRICE); 
             expect(await store.nftContract()).to.equal(nft.address);
             expect(await store.paused()).to.equal(false); 
-            expect(await store.mintPrice()).to.equal(constants.MINT_PRICE); 
 		});
     });  
 	
@@ -35,7 +34,7 @@ describe(constants.TOKEN_CONTRACT_ID + ": Store", function () {
 		});
         
 		it("non-owner cannot set price", async function () {
-            await expect(store.connect(addr1).pause(constants.MINT_PRICE+1)).to.be.reverted;
+            await expect(store.connect(addr1).setMintPrice(constants.MINT_PRICE+1)).to.be.reverted;
         });
         
         it("non-owner cannot set special price", async function () {
